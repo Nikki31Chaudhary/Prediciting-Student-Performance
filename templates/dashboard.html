@@ -8,15 +8,8 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <style>
-        body {
-            background:#f4f6f9;
-            animation: fadeIn 0.6s ease-in;
-        }
-
-        @keyframes fadeIn {
-            from { opacity:0; }
-            to { opacity:1; }
-        }
+        body { background:#f4f6f9; animation: fadeIn 0.6s ease-in; }
+        @keyframes fadeIn { from { opacity:0; } to { opacity:1; } }
 
         .sidebar {
             width:220px;
@@ -67,6 +60,9 @@
 <div class="sidebar">
     <h5>AI Dashboard</h5>
     <a href="/dashboard">Dashboard</a>
+    <a href="/model-insights">Model Insights</a>
+    <a href="/fairness-analysis">Fairness Analysis</a>
+    <a href="/classification-insights">Classification Insights</a>
     <a href="/export">Export Report</a>
     <a href="/logout">Logout</a>
     <button class="btn btn-sm btn-outline-dark mt-3" onclick="toggleTheme()">Toggle Theme</button>
@@ -79,54 +75,19 @@
     AI Student Risk Dashboard
 </h3>
 
-<!-- COURSE CARDS -->
+<!-- COURSE INFO -->
 <div class="row mb-4">
-    <div class="col-md-3">
-        <div class="card p-3 text-center">
-            <h6>Course</h6>
-            <h6>B.Tech CSE (AIML)</h6>
-        </div>
-    </div>
-    <div class="col-md-3">
-        <div class="card p-3 text-center">
-            <h6>Academic Year</h6>
-            <h6>2025-26</h6>
-        </div>
-    </div>
-    <div class="col-md-3">
-        <div class="card p-3 text-center">
-            <h6>Semester</h6>
-            <h6>Semester 4</h6>
-        </div>
-    </div>
-    <div class="col-md-3">
-        <div class="card p-3 text-center">
-            <h6>Total Students</h6>
-            <h4 id="studentCount">0</h4>
-        </div>
-    </div>
+    <div class="col-md-3"><div class="card p-3 text-center"><h6>Course</h6><h6>B.Tech CSE (AIML)</h6></div></div>
+    <div class="col-md-3"><div class="card p-3 text-center"><h6>Academic Year</h6><h6>2025-26</h6></div></div>
+    <div class="col-md-3"><div class="card p-3 text-center"><h6>Semester</h6><h6>Semester 4</h6></div></div>
+    <div class="col-md-3"><div class="card p-3 text-center"><h6>Total Students</h6><h4 id="studentCount">0</h4></div></div>
 </div>
 
-<!-- KPI CARDS -->
+<!-- KPI -->
 <div class="row mb-4">
-    <div class="col-md-4">
-        <div class="card p-3 text-center">
-            <h6>High Risk %</h6>
-            <h4 id="highPercent">0%</h4>
-        </div>
-    </div>
-    <div class="col-md-4">
-        <div class="card p-3 text-center">
-            <h6>Medium Risk %</h6>
-            <h4 id="mediumPercent">0%</h4>
-        </div>
-    </div>
-    <div class="col-md-4">
-        <div class="card p-3 text-center">
-            <h6>Low Risk %</h6>
-            <h4 id="lowPercent">0%</h4>
-        </div>
-    </div>
+    <div class="col-md-4"><div class="card p-3 text-center"><h6>High Risk %</h6><h4 id="highPercent">0%</h4></div></div>
+    <div class="col-md-4"><div class="card p-3 text-center"><h6>Medium Risk %</h6><h4 id="mediumPercent">0%</h4></div></div>
+    <div class="col-md-4"><div class="card p-3 text-center"><h6>Low Risk %</h6><h4 id="lowPercent">0%</h4></div></div>
 </div>
 
 <div class="alert alert-info">
@@ -140,7 +101,7 @@ Grading Scale: 0–20
 <!-- CHART -->
 <div class="card p-4 mb-4 text-center">
     <h6>Risk Distribution</h6>
-    <button class="btn btn-sm btn-outline-secondary mb-3" onclick="toggleChart()">Toggle Chart Type</button>
+    <button class="btn btn-sm btn-outline-secondary mb-3" onclick="toggleChart()">Toggle Chart</button>
     <div style="max-width:220px;margin:auto;">
         <canvas id="riskChart"></canvas>
     </div>
@@ -174,14 +135,14 @@ Grading Scale: 0–20
             </tr>
         </thead>
         <tbody>
-            {% for s in students %}
+        {% for s in students %}
             <tr>
                 <td>{{ s.id }}</td>
                 <td>{{ s.G1 }}</td>
                 <td>{{ s.G2 }}</td>
                 <td>{{ s.absences }}</td>
                 <td>{{ s.predicted_grade }}</td>
-                <td style="width:150px;">
+                <td>
                     <div class="progress">
                         <div class="progress-bar bg-success"
                              style="width: {{ (s.predicted_grade/20)*100 }}%">
@@ -204,12 +165,21 @@ Grading Scale: 0–20
                 </td>
                 <td>
                     <button class="btn btn-sm btn-outline-primary"
-                        onclick="showInsights('{{ s.predicted_grade }}','{{ s.risk }}')">
+                        onclick="showInsights(
+                        '{{ s.predicted_grade }}',
+                        '{{ s.risk }}',
+                        {{ s.G1 }},
+                        {{ s.G2 }},
+                        {{ s.absences }},
+                        {{ s.studytime }},
+                        {{ s.failures }},
+                        {{ s.importance|tojson }}
+                        )">
                         View
                     </button>
                 </td>
             </tr>
-            {% endfor %}
+        {% endfor %}
         </tbody>
     </table>
 </div>
@@ -235,79 +205,114 @@ Grading Scale: 0–20
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
 <script>
-var table;
 
+// DATATABLE
+var table;
 $(document).ready(function() {
     table = $('#studentTable').DataTable();
-
     $('#riskFilter').on('change', function() {
         table.column(6).search(this.value).draw();
     });
 });
 
+// COUNT RISKS
 let high=0, medium=0, low=0;
 {% for s in students %}
     {% if s.risk=="High" %} high++; {% elif s.risk=="Medium" %} medium++; {% else %} low++; {% endif %}
 {% endfor %}
-
 let total = high + medium + low;
 
-document.getElementById("highPercent").innerText = ((high/total)*100).toFixed(1)+"%";
-document.getElementById("mediumPercent").innerText = ((medium/total)*100).toFixed(1)+"%";
-document.getElementById("lowPercent").innerText = ((low/total)*100).toFixed(1)+"%";
+if(total>0){
+    document.getElementById("highPercent").innerText = ((high/total)*100).toFixed(1)+"%";
+    document.getElementById("mediumPercent").innerText = ((medium/total)*100).toFixed(1)+"%";
+    document.getElementById("lowPercent").innerText = ((low/total)*100).toFixed(1)+"%";
+}
 
+// CHART
 let chartInstance;
-let currentType = 'doughnut';
+let currentType='doughnut';
 
 function renderChart(type){
     if(chartInstance) chartInstance.destroy();
-    chartInstance = new Chart(document.getElementById("riskChart"),{
+    chartInstance=new Chart(document.getElementById("riskChart"),{
         type:type,
-        data:{
-            labels:['High','Medium','Low'],
-            datasets:[{
-                data:[high,medium,low],
-                backgroundColor:['#dc3545','#ffc107','#198754']
-            }]
-        },
-        options:{
-            cutout:'70%',
-            plugins:{legend:{position:'bottom'}},
-            animation:{duration:1500}
-        }
+        data:{labels:['High','Medium','Low'],
+        datasets:[{data:[high,medium,low],
+        backgroundColor:['#dc3545','#ffc107','#198754']}]}
     });
 }
-
-renderChart(currentType);
+if(total>0) renderChart(currentType);
 
 function toggleChart(){
-    currentType = currentType === 'doughnut' ? 'bar' : 'doughnut';
+    currentType = currentType==='doughnut'?'bar':'doughnut';
     renderChart(currentType);
 }
 
-let finalCount = {{ students|length }};
-let current = 0;
-let counter = setInterval(function(){
-    current += 3;
-    if(current >= finalCount){
-        current = finalCount;
+// STUDENT COUNTER
+let finalCount={{ students|length }};
+let current=0;
+let counter=setInterval(function(){
+    current+=5;
+    if(current>=finalCount){
+        current=finalCount;
         clearInterval(counter);
     }
-    document.getElementById("studentCount").innerText = current;
-}, 25);
+    document.getElementById("studentCount").innerText=current;
+},20);
 
-function showInsights(grade,risk){
-    document.getElementById("insightContent").innerHTML=
-    `<b>Predicted Final Grade:</b> ${grade}<br>
-     <b>Risk Level:</b> ${risk}<br><br>
-     Based on predefined academic performance thresholds.`;
-    new bootstrap.Modal(document.getElementById('insightModal')).show();
-}
-
+// THEME
 function toggleTheme(){
     document.body.classList.toggle("bg-dark");
     document.body.classList.toggle("text-white");
 }
+
+// INSIGHTS + SHAP
+function showInsights(grade,risk,g1,g2,absences,studytime,failures,importance){
+
+    let explanation="";
+    if(g1<10) explanation+="• Low G1<br>";
+    if(g2<10) explanation+="• Low G2<br>";
+    if(absences>10) explanation+="• High Absences<br>";
+    if(studytime<2) explanation+="• Low Study Time<br>";
+    if(failures>0) explanation+="• Previous Failures<br>";
+    if(explanation==="") explanation="Performance normal<br>";
+
+    let values=[g1,g2,studytime,failures,absences];
+    let names=["G1","G2","Study Time","Failures","Absences"];
+    let contrib=[], totalC=0;
+
+    for(let i=0;i<importance.length;i++){
+        let c=importance[i]*values[i];
+        contrib.push(c);
+        totalC+=c;
+    }
+
+    let percent=contrib.map(c=> totalC>0?((c/totalC)*100).toFixed(1):0);
+
+    let html="<br><b>Feature Contribution:</b><br>";
+    for(let i=0;i<names.length;i++){
+        html+=names[i]+" → "+percent[i]+"%<br>";
+    }
+    html+='<br><canvas id="contributionChart"></canvas>';
+
+    document.getElementById("insightContent").innerHTML=
+    "<b>Predicted Grade:</b> "+grade+
+    "<br><b>Risk:</b> "+risk+
+    "<br><br>"+explanation+html;
+
+    new bootstrap.Modal(document.getElementById('insightModal')).show();
+
+    setTimeout(()=>{
+        new Chart(document.getElementById("contributionChart"),{
+            type:'bar',
+            data:{labels:names,
+            datasets:[{label:'Contribution %',
+            data:percent,
+            backgroundColor:'#0d6efd'}]}
+        });
+    },200);
+}
+
 </script>
 
 </body>
