@@ -8,51 +8,216 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <style>
-        body { background:#f4f6f9; animation: fadeIn 0.6s ease-in; }
-        @keyframes fadeIn { from { opacity:0; } to { opacity:1; } }
+    body { 
+        background:#f1f5f9; 
+        animation: fadeIn 0.6s ease-in; 
+    }
 
-        .sidebar {
-            width:220px;
-            height:100vh;
-            position:fixed;
-            background:#ffffff;
-            border-right:1px solid #ddd;
-            padding:20px;
-        }
+    @keyframes fadeIn { from { opacity:0; } to { opacity:1; } }
 
-        .sidebar a {
-            color:#333;
-            text-decoration:none;
-            display:block;
-            margin:15px 0;
-            transition:0.2s;
-        }
+    .sidebar {
+        width:220px;
+        height:100vh;
+        position:fixed;
+        background:#ffffff;
+        border-right:1px solid #e5e7eb;
+        padding:20px;
+        box-shadow:0 0 20px rgba(0,0,0,0.04);
+    }
 
-        .sidebar a:hover {
-            color:#0d6efd;
-            transform:translateX(5px);
-        }
+    .sidebar a {
+        color:#334155;
+        text-decoration:none;
+        display:block;
+        margin:15px 0;
+        transition:0.2s;
+        padding:6px;
+        border-radius:6px;
+    }
 
-        .content {
-            margin-left:240px;
-            padding:30px;
-        }
+    .sidebar a:hover {
+        background:#eef2ff;
+        transform:translateX(4px);
+    }
 
-        .card {
-            border-radius:12px;
-            box-shadow:0 4px 12px rgba(0,0,0,0.08);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
+    .content {
+        margin-left:240px;
+        padding:30px;
+    }
 
-        .card:hover {
-            transform: translateY(-5px);
-            box-shadow:0 8px 20px rgba(0,0,0,0.15);
-        }
+    /* PREMIUM HEADER */
+    .dashboard-title {
+        background:linear-gradient(135deg,#2563eb,#3b82f6);
+        color:white;
+        padding:18px 25px;
+        border-radius:14px;
+        box-shadow:0 10px 25px rgba(37,99,235,0.25);
+        text-align:center;
+        margin-bottom:25px;
+    }
 
-        .risk-high{color:#dc3545;font-weight:bold;}
-        .risk-medium{color:#ffc107;font-weight:bold;}
-        .risk-low{color:#198754;font-weight:bold;}
-    </style>
+    .card {
+        border-radius:16px;
+        box-shadow:0 10px 25px rgba(0,0,0,0.08);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        border:none;
+    }
+
+    .card:hover {
+        transform: translateY(-5px);
+        box-shadow:0 18px 35px rgba(0,0,0,0.12);
+    }
+
+    .card h6 {
+        font-weight:600;
+        color:#475569;
+    }
+
+    .card-value {
+        font-size:18px;
+        font-weight:700;
+        color:#111827;
+    }
+
+    .risk-high{color:#dc2626;font-weight:bold;}
+    .risk-medium{color:#f59e0b;font-weight:bold;}
+    .risk-low{color:#16a34a;font-weight:bold;}
+
+    tbody tr:hover {
+        background:#eef2ff;
+        transition:0.3s;
+    }
+
+    .progress { height:8px; }
+
+    /* KPI Color Soft Background */
+.kpi-high {
+    background: #fee2e2;
+}
+
+.kpi-medium {
+    background: #fef3c7;
+}
+
+.kpi-low {
+    background: #dcfce7;
+}
+
+/* Stronger KPI Number */
+.kpi-number {
+    font-size: 22px;
+    font-weight: 700;
+}
+
+/* Sidebar Active */
+.sidebar a:first-child {
+    background:#2563eb;
+    color:white;
+}
+
+/* Chart Card Padding */
+.chart-card {
+    padding:30px;
+}
+/* Premium Table */
+#studentTable {
+    border-radius: 14px;
+    overflow: hidden;
+}
+
+#studentTable thead {
+    background: linear-gradient(90deg, #2563eb, #3b82f6);
+    color: white;
+    font-weight: 600;
+}
+
+#studentTable tbody tr {
+    transition: 0.2s ease;
+}
+
+#studentTable tbody tr:hover {
+    background: #eef2ff;
+    transform: scale(1.002);
+}
+
+/* Premium View Button */
+.btn-outline-primary {
+    border-radius: 20px;
+    padding: 4px 12px;
+    font-size: 13px;
+    transition: 0.3s;
+}
+
+.btn-outline-primary:hover {
+    background:#2563eb;
+    color:white;
+    box-shadow:0 6px 15px rgba(37,99,235,0.3);
+}
+
+/* Premium Confidence Badge */
+.badge.bg-info {
+    background: linear-gradient(135deg,#38bdf8,#0ea5e9) !important;
+    border-radius: 20px;
+    font-weight: 600;
+}
+/* Smooth transition */
+body, .card, .sidebar, table, thead {
+    transition: all 0.3s ease;
+}
+
+/* DARK MODE */
+.dark-mode {
+    background:#0f172a !important;
+    color:#e2e8f0 !important;
+}
+
+.dark-mode .sidebar {
+    background:#1e293b !important;
+    border-right:1px solid #334155;
+}
+
+.dark-mode .sidebar a {
+    color:#e2e8f0;
+}
+
+.dark-mode .sidebar a:hover {
+    background:#334155;
+}
+
+.dark-mode .card {
+    background:#1e293b;
+    color:#e2e8f0;
+    box-shadow:0 10px 25px rgba(0,0,0,0.4);
+}
+
+.dark-mode #studentTable thead {
+    background: linear-gradient(90deg,#1d4ed8,#2563eb);
+}
+
+.dark-mode #studentTable tbody tr:hover {
+    background:#334155;
+}
+
+.dark-mode .alert-info {
+    background:#1e3a8a;
+    color:#e0f2fe;
+    border:none;
+}
+
+.dark-mode .progress {
+    background:#334155;
+}
+
+.dark-mode .btn-outline-primary {
+    border-color:#60a5fa;
+    color:#60a5fa;
+}
+
+.dark-mode .btn-outline-primary:hover {
+    background:#2563eb;
+    color:white;
+}
+</style>
 </head>
 
 <body>
@@ -70,24 +235,72 @@
 
 <div class="content">
 
-<h3 class="text-center mb-4">
-    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQSOHQ9U78Xn1ioaVnrxQdO7NqlWA60QQccpg&s" width="45" style="margin-right:10px;">
-    AI Student Risk Dashboard
-</h3>
+<div class="dashboard-title">
+    <h4 style="margin:0;">
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQSOHQ9U78Xn1ioaVnrxQdO7NqlWA60QQccpg&s" width="45" style="margin-right:10px;">
+        AI Student Risk Dashboard
+    </h4>
+</div>
+
+
+
 
 <!-- COURSE INFO -->
 <div class="row mb-4">
-    <div class="col-md-3"><div class="card p-3 text-center"><h6>Course</h6><h6>B.Tech CSE (AIML)</h6></div></div>
-    <div class="col-md-3"><div class="card p-3 text-center"><h6>Academic Year</h6><h6>2025-26</h6></div></div>
-    <div class="col-md-3"><div class="card p-3 text-center"><h6>Semester</h6><h6>Semester 4</h6></div></div>
-    <div class="col-md-3"><div class="card p-3 text-center"><h6>Total Students</h6><h4 id="studentCount">0</h4></div></div>
+
+    <div class="col-md-3">
+        <div class="card p-3 text-center">
+            <h6>Course</h6>
+            <div class="card-value">B.Tech CSE (AIML)</div>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="card p-3 text-center">
+            <h6>Academic Year</h6>
+            <div class="card-value">2025-26</div>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="card p-3 text-center">
+            <h6>Semester</h6>
+            <div class="card-value">Semester 4</div>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="card p-3 text-center">
+            <h6>Total Students</h6>
+            <div class="card-value" id="studentCount">0</div>
+        </div>
+    </div>
+
 </div>
 
 <!-- KPI -->
+<!-- KPI -->
 <div class="row mb-4">
-    <div class="col-md-4"><div class="card p-3 text-center"><h6>High Risk %</h6><h4 id="highPercent">0%</h4></div></div>
-    <div class="col-md-4"><div class="card p-3 text-center"><h6>Medium Risk %</h6><h4 id="mediumPercent">0%</h4></div></div>
-    <div class="col-md-4"><div class="card p-3 text-center"><h6>Low Risk %</h6><h4 id="lowPercent">0%</h4></div></div>
+    <div class="col-md-4">
+        <div class="card p-3 text-center kpi-high">
+            <h6>High Risk %</h6>
+            <div class="kpi-number text-danger" id="highPercent">0%</div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card p-3 text-center kpi-medium">
+            <h6>Medium Risk %</h6>
+            <div class="kpi-number text-warning" id="mediumPercent">0%</div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card p-3 text-center kpi-low">
+            <h6>Low Risk %</h6>
+            <div class="kpi-number text-success" id="lowPercent">0%</div>
+        </div>
+    </div>
 </div>
 
 <div class="alert alert-info">
@@ -99,7 +312,7 @@ Grading Scale: 0–20
 </div>
 
 <!-- CHART -->
-<div class="card p-4 mb-4 text-center">
+<div class="card chart-card mb-4 text-center"></div>
     <h6>Risk Distribution</h6>
     <button class="btn btn-sm btn-outline-secondary mb-3" onclick="toggleChart()">Toggle Chart</button>
     <div style="max-width:220px;margin:auto;">
@@ -262,8 +475,7 @@ let counter=setInterval(function(){
 
 // THEME
 function toggleTheme(){
-    document.body.classList.toggle("bg-dark");
-    document.body.classList.toggle("text-white");
+    document.body.classList.toggle("dark-mode");
 }
 
 // INSIGHTS + SHAP
