@@ -11,15 +11,14 @@
             justify-content:center;
             align-items:center;
             background: linear-gradient(135deg,#2563eb,#3b82f6);
-            font-family: Arial, sans-serif;
         }
 
         .login-card {
-            width:380px;
+            width:400px;
             padding:30px;
             border-radius:18px;
             background:white;
-            box-shadow:0 20px 40px rgba(0,0,0,0.2);
+            box-shadow:0 20px 40px rgba(0,0,0,0.25);
         }
 
         .login-title {
@@ -36,17 +35,6 @@
         .btn-primary:hover {
             background:#1d4ed8;
         }
-
-        .divider {
-            text-align:center;
-            margin:20px 0;
-            color:#6b7280;
-        }
-
-        .social-btn {
-            border-radius:25px;
-            font-size:14px;
-        }
     </style>
 </head>
 
@@ -56,6 +44,7 @@
     <h4 class="login-title">AI Student Risk System</h4>
 
     <form method="POST">
+
         <div class="mb-3">
             <label>Username</label>
             <input type="text" name="username" class="form-control" required>
@@ -66,22 +55,21 @@
             <input type="password" name="password" class="form-control" required>
         </div>
 
+        <div class="mb-3">
+            <label>Login As</label>
+            <select name="role" class="form-select" required>
+                <option value="Admin">Admin</option>
+                <option value="Teacher">Teacher</option>
+                <option value="Student">Student</option>
+            </select>
+        </div>
+
         <button type="submit" class="btn btn-primary w-100">Sign In</button>
+
     </form>
 
-    <div class="divider">OR</div>
-
-    <!-- UI only for now -->
-    <button class="btn btn-outline-dark w-100 social-btn mb-2">
-        Continue with Google
-    </button>
-
-    <button class="btn btn-outline-secondary w-100 social-btn">
-        Continue with GitHub
-    </button>
-
     <div class="text-center mt-3">
-        <small>Admin login: admin / 123456</small>
+        <small>Demo login: admin / 123456</small>
     </div>
 </div>
 

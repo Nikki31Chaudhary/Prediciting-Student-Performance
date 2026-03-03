@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, redirect, session, send_file
 import pandas as pd
 import joblib
 import io
+from datetime import datetime
 from sklearn.metrics import mean_squared_error, r2_score, confusion_matrix, accuracy_score, classification_report
 
 app = Flask(__name__)
@@ -22,9 +23,16 @@ PASSWORD = "123456"
 @app.route("/", methods=["GET", "POST"])
 def login():
     if request.method == "POST":
-        if request.form["username"] == USERNAME and request.form["password"] == PASSWORD:
-            session["user"] = USERNAME
+        username = request.form["username"]
+        password = request.form["password"]
+        role = request.form["role"]
+
+        if username == USERNAME and password == PASSWORD:
+            session["user"] = username
+            session["role"] = role
+            session["login_time"] = datetime.now().strftime("%d %b %Y, %I:%M %p")
             return redirect("/dashboard")
+
     return render_template("login.html")
 
 # ---------------- DASHBOARD ----------------

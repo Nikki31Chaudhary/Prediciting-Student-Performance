@@ -228,7 +228,9 @@ body, .card, .sidebar, table, thead {
     <a href="/model-insights">Model Insights</a>
     <a href="/fairness-analysis">Fairness Analysis</a>
     <a href="/classification-insights">Classification Insights</a>
-    <a href="/export">Export Report</a>
+    {% if session.get("role") == "Admin" %}
+<a href="/export">Export Report</a>
+{% endif %}
     <a href="/logout">Logout</a>
     <button class="btn btn-sm btn-outline-dark mt-3" onclick="toggleTheme()">Toggle Theme</button>
 </div>
@@ -240,6 +242,13 @@ body, .card, .sidebar, table, thead {
         <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQSOHQ9U78Xn1ioaVnrxQdO7NqlWA60QQccpg&s" width="45" style="margin-right:10px;">
         AI Student Risk Dashboard
     </h4>
+</div>
+<div class="text-end mb-3">
+    <small>
+        Logged in as: <b>{{ session.get("user") }}</b> |
+        Role: <b>{{ session.get("role") }}</b> |
+        Login Time: <b>{{ session.get("login_time") }}</b>
+    </small>
 </div>
 
 
