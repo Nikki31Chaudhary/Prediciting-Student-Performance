@@ -256,6 +256,66 @@ body, .card, .sidebar, table, thead {
     background: #dcfce7;
     color: #166534;
 }
+.risk-box {
+    padding: 18px;
+    border-radius: 14px;
+    font-weight: 600;
+    transition: 0.3s ease;
+}
+
+.risk-box:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+}
+.theme-dark {
+    background:#0f172a !important;
+    color:#e2e8f0 !important;
+}
+
+.theme-dark .sidebar {
+    background:#1e293b !important;
+}
+
+.theme-dark .card {
+    background:#1e293b !important;
+    color:#e2e8f0;
+}
+.theme-blue {
+    background:#eef4ff !important;
+}
+
+.theme-blue .sidebar {
+    background:#1e3a8a;
+    color:white;
+}
+
+.theme-blue .sidebar a {
+    color:white;
+}
+
+.theme-blue .card {
+    border:1px solid #c7d2fe;
+}
+.theme-grey {
+    background:#f3f4f6 !important;
+}
+
+.theme-grey .sidebar {
+    background:#374151;
+    color:white;
+}
+
+.theme-grey .sidebar a {
+    color:#e5e7eb;
+}
+
+.theme-grey .card {
+    background:white;
+    border:1px solid #e5e7eb;
+}
+body, .card, .sidebar {
+    transition: all 0.3s ease;
+}
 </style>
 </head>
 
@@ -274,7 +334,12 @@ body, .card, .sidebar, table, thead {
 
 {% endif %}
     <a href="/logout"><i class="fa-solid fa-right-from-bracket me-2"></i>Logout</a>
-    <button class="btn btn-sm btn-outline-dark mt-3" onclick="toggleTheme()">Toggle Theme</button>
+    <select class="form-select mt-3" onchange="changeTheme(this.value)">
+    <option value="light">Light</option>
+    <option value="dark">Dark</option>
+    <option value="blue">Blue Analytics</option>
+    <option value="grey">Soft Grey</option>
+</select>
 </div>
 
 <div class="content">
@@ -396,7 +461,7 @@ Grading Scale: 0–20
 
 <!-- TABLE -->
 <div class="card p-4">
-    <h6>Student Risk Overview</h6>
+    <h6 class="section-title">Student Risk Overview</h6>
 
     <div class="mb-3">
         <select id="riskFilter" class="form-select" style="max-width:200px;">
@@ -577,8 +642,28 @@ let counter=setInterval(function(){
 },20);
 
 // THEME
-function toggleTheme(){
-    document.body.classList.toggle("dark-mode");
+function changeTheme(theme){
+
+    document.body.classList.remove("theme-dark","theme-blue","theme-grey");
+
+    if(theme === "dark"){
+        document.body.classList.add("theme-dark");
+    }
+    else if(theme === "blue"){
+        document.body.classList.add("theme-blue");
+    }
+    else if(theme === "grey"){
+        document.body.classList.add("theme-grey");
+    }
+
+    localStorage.setItem("selectedTheme", theme);
+}
+
+window.onload = function(){
+    let savedTheme = localStorage.getItem("selectedTheme");
+    if(savedTheme){
+        changeTheme(savedTheme);
+    }
 }
 
 // INSIGHTS + SHAP
