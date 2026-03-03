@@ -156,20 +156,21 @@ Based on predicted grade (0–20 scale):
 ---
 
 
+▶️ How to Run Locally
 
-## ▶️ How to Run Locally
-
-### 1️⃣ Clone Repository
+1️⃣ Clone Repository
 
 ```bash
 git clone https://github.com/Nikki31Chaudhary/Prediciting-Student-Performance.git
 cd Prediciting-Student-Performance
 
-###2️⃣Install Dependencies
+2️⃣Install Dependencies
 pip install flask pandas scikit-learn joblib
 
-###3️⃣ Run Application
+3️⃣ Run Application
 python app.py
+
+
 
 Open browser:
 
