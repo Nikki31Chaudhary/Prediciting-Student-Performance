@@ -8,6 +8,12 @@ from sklearn.metrics import mean_squared_error, r2_score, confusion_matrix, accu
 app = Flask(__name__)
 app.secret_key = "supersecretkey"
 
+USERS = {
+    "admin": "123456",
+    "teacher": "123456",
+    "student": "123456"
+}
+
 # Load models
 regression_model = joblib.load("model.pkl")
 classifier_model = joblib.load("classifier_model.pkl")
@@ -27,13 +33,24 @@ def login():
         password = request.form["password"]
         role = request.form["role"]
 
-        if username == USERNAME and password == PASSWORD:
+        if username in USERS and USERS[username] == password:
             session["user"] = username
             session["role"] = role
             session["login_time"] = datetime.now().strftime("%d %b %Y, %I:%M %p")
             return redirect("/dashboard")
 
     return render_template("login.html")
+
+@app.route("/signup", methods=["POST"])
+def signup():
+    username = request.form["username"]
+    password = request.form["password"]
+
+    if username in USERS:
+        return redirect("/")  # already exists
+
+    USERS[username] = password
+    return redirect("/")
 
 # ---------------- DASHBOARD ----------------
 @app.route("/dashboard")
