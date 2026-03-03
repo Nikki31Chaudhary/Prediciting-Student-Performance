@@ -69,10 +69,13 @@ def dashboard():
 
         if predicted_grade < 10:
             risk = "High"
+            suggestion = "Immediate academic counseling recommended."
         elif predicted_grade < 15:
             risk = "Medium"
+            suggestion = "Weekly monitoring and performance review advised."
         else:
             risk = "Low"
+            suggestion = "No intervention required. Maintain consistency."
 
         students.append({
             "id": i,
@@ -83,6 +86,7 @@ def dashboard():
             "failures": df.iloc[i]["failures"],
             "predicted_grade": predicted_grade,
             "risk": risk,
+            "suggestion": suggestion,
             "importance": importance.tolist()
         })
 
@@ -103,6 +107,12 @@ def model_insights():
     r2 = round(r2_score(y, predictions), 3)
 
     importance = regression_model.feature_importances_
+    max_index = importance.argmax()
+    top_feature = features[max_index]
+
+    interpretation_text = f"The model shows strong predictive performance. The most influential feature is {top_feature}, indicating it significantly impacts final grade prediction."
+
+    
 
     feature_data = []
     for i in range(len(features)):
@@ -112,11 +122,12 @@ def model_insights():
         })
 
     return render_template(
-        "model_insights.html",
-        mse=mse,
-        r2=r2,
-        feature_data=feature_data
-    )
+    "model_insights.html",
+    mse=mse,
+    r2=r2,
+    feature_data=feature_data,
+    interpretation_text=interpretation_text
+)
 
 # ---------------- FAIRNESS ANALYSIS ----------------
 @app.route("/fairness-analysis")

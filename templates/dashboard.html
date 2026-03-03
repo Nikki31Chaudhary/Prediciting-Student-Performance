@@ -287,7 +287,7 @@ body, .card, .sidebar, table, thead {
 
 </div>
 
-<!-- KPI -->
+
 <!-- KPI -->
 <div class="row mb-4">
     <div class="col-md-4">
@@ -354,6 +354,7 @@ Grading Scale: 0–20
                 <th>Risk</th>
                 <th>AI Confidence</th>
                 <th>Action</th>
+                <th>Intervention</th>
             </tr>
         </thead>
         <tbody>
@@ -364,6 +365,9 @@ Grading Scale: 0–20
                 <td>{{ s.G2 }}</td>
                 <td>{{ s.absences }}</td>
                 <td>{{ s.predicted_grade }}</td>
+                <td>
+    <small>{{ s.suggestion }}</small>
+</td>
                 <td>
                     <div class="progress">
                         <div class="progress-bar bg-success"
