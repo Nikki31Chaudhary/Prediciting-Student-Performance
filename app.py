@@ -90,7 +90,18 @@ def dashboard():
             "importance": importance.tolist()
         })
 
-    return render_template("dashboard.html", students=students)
+        # Risk Summary Counts
+        high_count = sum(1 for s in students if s["risk"] == "High")
+        medium_count = sum(1 for s in students if s["risk"] == "Medium")
+        low_count = sum(1 for s in students if s["risk"] == "Low")
+
+    return render_template(
+    "dashboard.html",
+    students=students,
+    high_count=high_count,
+    medium_count=medium_count,
+    low_count=low_count
+)
 
 # ---------------- MODEL INSIGHTS ----------------
 @app.route("/model-insights")

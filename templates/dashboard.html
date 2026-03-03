@@ -217,6 +217,44 @@ body, .card, .sidebar, table, thead {
     background:#2563eb;
     color:white;
 }
+.section-title {
+    font-weight: 600;
+    position: relative;
+    display: inline-block;
+    padding-bottom: 6px;
+}
+
+.section-title::after {
+    content: "";
+    width: 60px;
+    height: 3px;
+    background: linear-gradient(90deg,#2563eb,#3b82f6);
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    border-radius: 5px;
+}
+
+.risk-box {
+    padding: 15px;
+    border-radius: 12px;
+    font-weight: 600;
+}
+
+.high-box {
+    background: #fee2e2;
+    color: #b91c1c;
+}
+
+.medium-box {
+    background: #fef3c7;
+    color: #b45309;
+}
+
+.low-box {
+    background: #dcfce7;
+    color: #166534;
+}
 </style>
 </head>
 
@@ -310,6 +348,29 @@ body, .card, .sidebar, table, thead {
             <div class="kpi-number text-success" id="lowPercent">0%</div>
         </div>
     </div>
+    <div class="card p-4 mb-4 shadow-sm border-0">
+    <h6 class="section-title">Risk Summary Overview</h6>
+    <div class="row text-center mt-3">
+        <div class="col-md-4">
+            <div class="risk-box high-box">
+                <h4>{{ high_count }}</h4>
+                <small>Students Need Immediate Attention</small>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="risk-box medium-box">
+                <h4>{{ medium_count }}</h4>
+                <small>Students Need Monitoring</small>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="risk-box low-box">
+                <h4>{{ low_count }}</h4>
+                <small>Students Stable</small>
+            </div>
+        </div>
+    </div>
+</div>
 </div>
 
 <div class="alert alert-info">
