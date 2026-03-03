@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, session, send_file
+from flask import Flask, render_template, request, redirect, session, send_file,jsonify
 import pandas as pd
 import joblib
 import io
@@ -223,6 +223,37 @@ def export():
 def logout():
     session.pop("user", None)
     return redirect("/")
+
+@app.route("/simulate", methods=["POST"])
+def simulate():
+
+    g1 = float(request.form["g1"])
+    g2 = float(request.form["g2"])
+    studytime = float(request.form["studytime"])
+    failures = float(request.form["failures"])
+    absences = float(request.form["absences"])
+
+    input_data = [[g1, g2, studytime, failures, absences]]
+
+    predicted_grade = round(regression_model.predict(input_data)[0], 2)
+
+    prob = classifier_model.predict_proba(input_data)[0]
+    max_prob = max(prob)
+
+    risk_index = prob.argmax()
+
+    if risk_index == 0:
+        risk = "High"
+    elif risk_index == 1:
+        risk = "Medium"
+    else:
+        risk = "Low"
+
+    return jsonify({
+    "predicted_grade": predicted_grade,
+    "risk": risk,
+    "confidence": round(max_prob * 100, 1)
+})
 
 if __name__ == "__main__":
     app.run(debug=True)
