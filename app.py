@@ -212,6 +212,56 @@ def classification_insights():
         report=report
     )
 
+@app.route("/upload-data")
+def upload_page():
+    if "user" not in session:
+        return redirect("/")
+    return render_template("upload.html")
+
+@app.route("/analyze-data", methods=["POST"])
+def analyze_data():
+
+    file = request.files["file"]
+
+    if file.filename == "":
+        return "No file uploaded"
+
+    df_uploaded = pd.read_csv(file)
+
+    features = ["G1","G2","studytime","failures","absences"]
+
+    X = df_uploaded[features]
+
+    predictions = regression_model.predict(X)
+    importance = regression_model.feature_importances_
+
+    students = []
+
+    for i in range(len(df_uploaded)):
+
+        predicted_grade = round(predictions[i],2)
+
+        if predicted_grade < 10:
+            risk="High"
+        elif predicted_grade < 15:
+            risk="Medium"
+        else:
+            risk="Low"
+
+        students.append({
+            "id":i,
+            "G1":df_uploaded.iloc[i]["G1"],
+            "G2":df_uploaded.iloc[i]["G2"],
+            "absences":df_uploaded.iloc[i]["absences"],
+            "studytime":df_uploaded.iloc[i]["studytime"],
+            "failures":df_uploaded.iloc[i]["failures"],
+            "predicted_grade":predicted_grade,
+            "risk":risk,
+            "importance":importance.tolist()
+        })
+
+    return render_template("dashboard.html", students=students)
+
 # ---------------- EXPORT ----------------
 @app.route("/export")
 def export():
