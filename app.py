@@ -22,21 +22,26 @@ df = pd.read_csv("data/student-mat.csv", sep=";")
 
 features = ["G1", "G2", "studytime", "failures", "absences"]
 
-USERNAME = "admin"
-PASSWORD = "123456"
+users = {
+"admin":{"password":"123456","role":"Admin"},
+"teacher":{"password":"123456","role":"Teacher"},
+"student":{"password":"123456","role":"Student"}
+}
 
 # ---------------- LOGIN ----------------
-@app.route("/", methods=["GET", "POST"])
+@app.route("/", methods=["GET","POST"])
 def login():
-    if request.method == "POST":
-        username = request.form["username"]
-        password = request.form["password"]
-        role = request.form["role"]
 
-        if username in USERS and USERS[username] == password:
-            session["user"] = username
-            session["role"] = role
-            session["login_time"] = datetime.now().strftime("%d %b %Y, %I:%M %p")
+    if request.method=="POST":
+
+        username=request.form["username"]
+        password=request.form["password"]
+
+        if username in users and users[username]["password"]==password:
+
+            session["user"]=username
+            session["role"]=users[username]["role"]
+
             return redirect("/dashboard")
 
     return render_template("login.html")
@@ -100,7 +105,9 @@ def dashboard():
     students=students,
     high_count=high_count,
     medium_count=medium_count,
-    low_count=low_count
+    low_count=low_count,
+    role=session.get("role")
+
 )
 
 # ---------------- MODEL INSIGHTS ----------------
@@ -276,8 +283,8 @@ def analyze_data():
 # ---------------- EXPORT ----------------
 @app.route("/export")
 def export():
-    if "user" not in session:
-        return redirect("/")
+    if session.get("role")!="Admin":
+        return "Access Denied"
 
     output = io.StringIO()
     df.to_csv(output, index=False)

@@ -320,28 +320,48 @@ body, .card, .sidebar {
 </head>
 
 <body>
-
 <div class="sidebar">
-    <h5>AI Dashboard</h5>
-    <a href="/dashboard">📈 Dashboard</a>
-    <a href="/model-insights">🧠 Model Insights</a>
-    <a href="/fairness-analysis">⚖ Fairness Analysis</a>
-    <a href="/classification-insights">📚 Classification</a>
-    <a href="/upload-data">📂 Upload Dataset</a>
-    
-    
-    {% if session.get("role") == "Admin" %}
-    <a href="/export">📄 Export Report</a>
 
+<h5 class="mb-4">AI Dashboard</h5>
+
+<a href="/dashboard">📈 Dashboard</a>
+
+{% if role in ["Admin","Teacher"] %}
+<a href="/model-insights">🧠 Model Insights</a>
 {% endif %}
-    <a href="/logout">🚪 Logout</a>
-    <select class="form-select mt-3" onchange="changeTheme(this.value)">
+
+{% if role in ["Admin","Teacher"] %}
+<a href="/fairness-analysis">⚖ Fairness Analysis</a>
+{% endif %}
+
+{% if role in ["Admin","Teacher"] %}
+<a href="/classification-insights">📚 Classification</a>
+{% endif %}
+
+{% if role in ["Admin","Teacher"] %}
+<a href="/upload-data">📂 Upload Dataset</a>
+{% endif %}
+
+{% if role == "Admin" %}
+<a href="/export">📄 Export Report</a>
+{% endif %}
+
+<a href="/logout">🚪 Logout</a>
+
+   <select class="form-select mt-3" onchange="changeTheme(this.value)">
     <option value="light">Light</option>
     <option value="dark">Dark</option>
     <option value="blue">Blue Analytics</option>
     <option value="grey">Soft Grey</option>
 </select>
+
+
 </div>
+
+
+
+
+
 
 <div class="content">
 
