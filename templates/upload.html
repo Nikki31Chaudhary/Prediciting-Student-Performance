@@ -10,16 +10,48 @@
 
 body{
 background:#f1f5f9;
+font-family: Arial;
 }
 
+/* Upload Card */
+
 .upload-card{
-max-width:500px;
+max-width:600px;
 margin:auto;
-margin-top:120px;
+margin-top:100px;
 padding:40px;
 border-radius:15px;
 box-shadow:0 10px 30px rgba(0,0,0,0.1);
 background:white;
+}
+
+/* Drag Drop Area */
+
+.drop-zone{
+border:2px dashed #2563eb;
+border-radius:12px;
+padding:40px;
+text-align:center;
+cursor:pointer;
+transition:0.3s;
+background:#f8fafc;
+}
+
+.drop-zone:hover{
+background:#eef2ff;
+}
+
+.drop-zone.dragover{
+background:#dbeafe;
+border-color:#1d4ed8;
+}
+
+/* File Name */
+
+.file-name{
+margin-top:10px;
+font-weight:600;
+color:#2563eb;
 }
 
 </style>
@@ -34,13 +66,16 @@ background:white;
 
 <form action="/analyze-data" method="POST" enctype="multipart/form-data">
 
-<div class="mb-3">
-<label class="form-label">Upload CSV File</label>
-<input type="file" name="file" class="form-control" required>
+<input type="file" name="file" id="fileInput" hidden required>
+
+<div class="drop-zone" id="dropZone">
+<p>⬆ Drag & Drop CSV Here</p>
+<p>or click to upload</p>
+<div class="file-name" id="fileName"></div>
 </div>
 
-<div class="mb-3">
-<label class="form-label">Course</label>
+<div class="mt-3">
+<label>Course</label>
 <select class="form-control">
 <option>B.Tech CSE</option>
 <option>B.Tech Honours</option>
@@ -49,8 +84,8 @@ background:white;
 </select>
 </div>
 
-<div class="mb-3">
-<label class="form-label">Semester</label>
+<div class="mt-3">
+<label>Semester</label>
 <select class="form-control">
 <option>1</option>
 <option>2</option>
@@ -63,8 +98,11 @@ background:white;
 </select>
 </div>
 
-<button class="btn btn-primary w-100">Analyze Dataset</button>
-<div class="alert alert-info mt-3 shadow-sm">
+<button class="btn btn-primary w-100 mt-4">Analyze Dataset</button>
+
+</form>
+
+<div class="alert alert-info mt-4">
 
 <b>Accepted CSV Format</b>
 
@@ -77,9 +115,40 @@ G1,G2,studytime,failures,absences
 
 </div>
 
-</form>
-
 </div>
+
+<script>
+
+const dropZone = document.getElementById("dropZone")
+const fileInput = document.getElementById("fileInput")
+const fileName = document.getElementById("fileName")
+
+dropZone.addEventListener("click", () => fileInput.click())
+
+fileInput.addEventListener("change", () => {
+fileName.textContent = fileInput.files[0].name
+})
+
+dropZone.addEventListener("dragover", (e) => {
+e.preventDefault()
+dropZone.classList.add("dragover")
+})
+
+dropZone.addEventListener("dragleave", () => {
+dropZone.classList.remove("dragover")
+})
+
+dropZone.addEventListener("drop", (e) => {
+
+e.preventDefault()
+dropZone.classList.remove("dragover")
+
+fileInput.files = e.dataTransfer.files
+fileName.textContent = e.dataTransfer.files[0].name
+
+})
+
+</script>
 
 </body>
 </html>
