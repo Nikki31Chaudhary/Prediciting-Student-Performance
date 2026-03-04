@@ -346,6 +346,12 @@ body, .card, .sidebar {
 <a href="/export">📄 Export Report</a>
 {% endif %}
 
+{% if role=="Admin" %}
+<a href="/admin-analytics">
+📊Admin Analytics
+</a>
+{% endif %}
+
 <a href="/logout">🚪 Logout</a>
 
    <select class="form-select mt-3" onchange="changeTheme(this.value)">
