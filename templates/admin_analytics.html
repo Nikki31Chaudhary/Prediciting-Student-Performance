@@ -1,10 +1,224 @@
-<h3>Admin Analytics Dashboard</h3>
+<!DOCTYPE html>
+<html>
+<head>
 
-<div class="card">
-<h5>Risk Distribution</h5>
+<title>Admin Analytics</title>
 
-High Risk: {{high}}
-Medium Risk: {{medium}}
-Low Risk: {{low}}
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<style>
+
+body{
+background:#f1f5f9;
+}
+
+.container-box{
+max-width:1100px;
+margin:auto;
+margin-top:40px;
+}
+
+.card{
+border-radius:14px;
+box-shadow:0 10px 25px rgba(0,0,0,0.1);
+}
+
+.stat-card{
+text-align:center;
+padding:20px;
+}
+
+.stat-number{
+font-size:26px;
+font-weight:700;
+}
+
+.chart-box{
+max-width:450px;
+margin:auto;
+}
+
+.chart-box canvas{
+height:260px !important;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="container-box">
+
+<h3 class="text-center mb-4">Admin Analytics Dashboard</h3>
+
+<!-- DATASET STATISTICS -->
+
+<div class="row mb-4">
+
+<div class="col-md-3">
+<div class="card stat-card">
+<p>Total Students</p>
+<div class="stat-number">{{ total }}</div>
+</div>
+</div>
+
+<div class="col-md-3">
+<div class="card stat-card">
+<p>High Risk</p>
+<div class="stat-number text-danger">{{ high }}</div>
+</div>
+</div>
+
+<div class="col-md-3">
+<div class="card stat-card">
+<p>Medium Risk</p>
+<div class="stat-number text-warning">{{ medium }}</div>
+</div>
+</div>
+
+<div class="col-md-3">
+<div class="card stat-card">
+<p>Low Risk</p>
+<div class="stat-number text-success">{{ low }}</div>
+</div>
+</div>
 
 </div>
+
+
+<!-- RISK DISTRIBUTION -->
+
+<div class="card p-4 mb-4">
+
+<h5>Risk Distribution</h5>
+
+<div class="chart-box">
+<canvas id="riskChart"></canvas>
+</div>
+
+</div>
+
+
+<!-- FEATURE IMPORTANCE -->
+
+<div class="card p-4 mb-4">
+
+<h5>Feature Importance Summary</h5>
+
+<div class="chart-box">
+<canvas id="importanceChart"></canvas>
+</div>
+
+</div>
+
+
+<!-- INTERVENTION SUMMARY -->
+
+<div class="card p-4 mb-4">
+
+<h5>Intervention Summary</h5>
+
+<ul>
+
+<li>Students requiring immediate counseling: {{ high }}</li>
+
+<li>Students requiring monitoring: {{ medium }}</li>
+
+<li>Students performing stable: {{ low }}</li>
+
+</ul>
+
+</div>
+
+
+<!-- RISK PROBABILITY -->
+
+<div class="card p-4">
+
+<h5>Risk Probability Breakdown</h5>
+
+<div class="chart-box">
+<canvas id="probChart"></canvas>
+</div>
+</div>
+
+
+</div>
+
+
+<script>
+
+let high = {{ high }}
+let medium = {{ medium }}
+let low = {{ low }}
+
+let total = {{ total }}
+
+
+// Risk Distribution Chart
+
+new Chart(document.getElementById("riskChart"),{
+
+type:"pie",
+
+data:{
+labels:["High","Medium","Low"],
+
+datasets:[{
+data:[high,medium,low],
+backgroundColor:["#dc2626","#f59e0b","#16a34a"]
+}]
+}
+
+})
+
+
+// Feature Importance Chart
+
+let importance = {{ importance|tojson }}
+
+new Chart(document.getElementById("importanceChart"),{
+
+type:"bar",
+
+data:{
+labels:["G1","G2","Study Time","Failures","Absences"],
+
+datasets:[{
+label:"Importance",
+data:importance,
+backgroundColor:"#2563eb"
+}]
+}
+
+})
+
+
+// Probability Chart
+
+let highProb = high/total
+let medProb = medium/total
+let lowProb = low/total
+
+new Chart(document.getElementById("probChart"),{
+
+type:"bar",
+
+data:{
+labels:["High","Medium","Low"],
+
+datasets:[{
+label:"Risk Probability",
+data:[highProb,medProb,lowProb],
+backgroundColor:["#dc2626","#f59e0b","#16a34a"]
+}]
+}
+
+})
+
+</script>
+
+</body>
+</html>

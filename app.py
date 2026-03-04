@@ -330,12 +330,12 @@ def student_detail(student_id):
 @app.route("/admin-analytics")
 def admin_analytics():
 
-    if session.get("role") != "Admin":
+    if session.get("role")!="Admin":
         return "Access Denied"
 
-    X = df[features]
+    X=df[features]
 
-    predictions = regression_model.predict(X)
+    predictions=regression_model.predict(X)
 
     high=0
     medium=0
@@ -350,11 +350,17 @@ def admin_analytics():
         else:
             low+=1
 
+    importance=regression_model.feature_importances_
+
+    total=len(df)
+
     return render_template(
         "admin_analytics.html",
         high=high,
         medium=medium,
-        low=low
+        low=low,
+        total=total,
+        importance=importance.tolist()
     )
 
 # ---------------- LOGOUT ----------------
