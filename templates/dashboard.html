@@ -545,19 +545,9 @@ Grading Scale: 0–20
                     </span>
                 </td>
                 <td>
-                    <button class="btn btn-sm btn-outline-primary"
-                        onclick="showInsights(
-                        '{{ s.predicted_grade }}',
-                        '{{ s.risk }}',
-                        {{ s.G1 }},
-                        {{ s.G2 }},
-                        {{ s.absences }},
-                        {{ s.studytime }},
-                        {{ s.failures }},
-                        {{ s.importance|tojson }}
-                        )">
+                    <a href="/student/{{ s.id }}" class="btn btn-sm btn-outline-primary">
                         View
-                    </button>
+                        </a>
                 </td>
             </tr>
         {% endfor %}

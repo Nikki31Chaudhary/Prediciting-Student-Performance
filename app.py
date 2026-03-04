@@ -297,6 +297,36 @@ def export():
         download_name="student_report.csv"
     )
 
+@app.route("/student/<int:student_id>")
+def student_detail(student_id):
+
+    if "user" not in session:
+        return redirect("/")
+
+    X = df[features]
+
+    predictions = regression_model.predict(X)
+    importance = regression_model.feature_importances_
+
+    student = df.iloc[student_id]
+
+    predicted_grade = round(predictions[student_id],2)
+
+    if predicted_grade < 10:
+        risk="High"
+    elif predicted_grade < 15:
+        risk="Medium"
+    else:
+        risk="Low"
+
+    return render_template(
+        "student_detail.html",
+        student=student,
+        predicted_grade=predicted_grade,
+        risk=risk,
+        importance=importance.tolist()
+    )
+
 # ---------------- LOGOUT ----------------
 @app.route("/logout")
 def logout():
