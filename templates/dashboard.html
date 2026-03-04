@@ -323,18 +323,18 @@ body, .card, .sidebar {
 
 <div class="sidebar">
     <h5>AI Dashboard</h5>
-    <a href="/dashboard"><i class="fa-solid fa-chart-line me-2"></i>Dashboard</a>
-    <a href="/model-insights"><i class="fa-solid fa-brain me-2"></i>Model Insights</a>
-    <a href="/fairness-analysis"><i class="fa-solid fa-scale-balanced me-2"></i>Fairness Analysis</a>
-    <a href="/classification-insights"><i class="fa-solid fa-layer-group me-2"></i>Classification</a>
+    <a href="/dashboard">📈 Dashboard</a>
+    <a href="/model-insights">🧠 Model Insights</a>
+    <a href="/fairness-analysis">⚖ Fairness Analysis</a>
+    <a href="/classification-insights">📚 Classification</a>
     <a href="/upload-data">📂 Upload Dataset</a>
     
     
     {% if session.get("role") == "Admin" %}
-    <a href="/export"><i class="fa-solid fa-file-export me-2"></i>Export Report</a>
+    <a href="/export">📄 Export Report</a>
 
 {% endif %}
-    <a href="/logout"><i class="fa-solid fa-right-from-bracket me-2"></i>Logout</a>
+    <a href="/logout">🚪 Logout</a>
     <select class="form-select mt-3" onchange="changeTheme(this.value)">
     <option value="light">Light</option>
     <option value="dark">Dark</option>
