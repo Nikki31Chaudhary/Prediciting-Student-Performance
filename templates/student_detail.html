@@ -30,28 +30,25 @@ box-shadow:0 10px 25px rgba(0,0,0,0.1);
 
 <body>
 
+
+
 <div class="container-box">
 
 <h3 class="text-center mb-4">Student Risk Analysis</h3>
 
-<div class="card p-4 mb-4">
+<div class="card p-4 mb-4 text-center">
 
-<h5>Prediction Summary</h5>
+<h4>Prediction Summary</h4>
 
-<p><b>Predicted Grade:</b> {{ predicted_grade }}</p>
-
-<p>
-<b>Risk Level:</b>
+<h2>{{ predicted_grade }}/20</h2>
 
 {% if risk=="High" %}
-<span class="text-danger">High Risk</span>
+<span class="badge bg-danger">High Risk</span>
 {% elif risk=="Medium" %}
-<span class="text-warning">Medium Risk</span>
+<span class="badge bg-warning">Medium Risk</span>
 {% else %}
-<span class="text-success">Low Risk</span>
+<span class="badge bg-success">Low Risk</span>
 {% endif %}
-
-</p>
 
 </div>
 
@@ -71,15 +68,98 @@ box-shadow:0 10px 25px rgba(0,0,0,0.1);
 
 </div>
 
+<div class="card p-4 mb-4">
+
+<h5>Performance Indicator</h5>
+
+<div class="progress">
+
+{% if risk=="High" %}
+<div class="progress-bar bg-danger"
+{% elif risk=="Medium" %}
+<div class="progress-bar bg-warning"
+{% else %}
+<div class="progress-bar bg-success"
+{% endif %}
+
+style="width: {{ (predicted_grade/20)*100 }}%">
+
+{{ (predicted_grade/20*100)|round(1) }}%
+
+</div>
+
+</div>
+
+</div>
+
 <div class="card p-4">
 
-<h5>Feature Importance</h5>
+<h5>Feature Contribution Analysis</h5>
 
 <canvas id="importanceChart"></canvas>
 
 </div>
 
 </div>
+<div class="card p-4 mb-4">
+
+<h5>AI Recommended Intervention</h5>
+
+<ul>
+
+{% if risk=="High" %}
+
+<li>Immediate academic counseling recommended.</li>
+<li>Provide structured tutoring sessions.</li>
+<li>Monitor attendance closely to reduce absences.</li>
+<li>Create a weekly study plan for the student.</li>
+
+{% elif risk=="Medium" %}
+
+<li>Encourage regular study habits to improve performance.</li>
+<li>Review weak subject areas identified from internal exams.</li>
+<li>Provide light mentoring or peer learning sessions.</li>
+<li>Track progress in upcoming assessments.</li>
+
+{% else %}
+
+<li>Good academic performance observed.</li>
+<li>Encourage participation in advanced learning activities.</li>
+<li>Maintain consistent study routine.</li>
+<li>Provide opportunities for skill development.</li>
+
+{% endif %}
+
+</ul>
+
+</div>
+
+<div class="card p-4 mb-4">
+
+<h5>AI Feedback</h5>
+
+{% if risk=="High" %}
+
+<p class="text-danger">
+The student is currently at high academic risk. Early intervention such as tutoring, mentoring, and improved attendance can significantly improve performance.
+</p>
+
+{% elif risk=="Medium" %}
+
+<p class="text-warning">
+The student is performing at a moderate level. With better consistency in study time and improved exam preparation, the student can achieve higher grades.
+</p>
+
+{% else %}
+
+<p class="text-success">
+Good going! The student is performing well academically. Encourage them to maintain their study habits and explore advanced learning opportunities.
+</p>
+
+{% endif %}
+
+</div>
+
 
 <script>
 
