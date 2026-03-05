@@ -101,7 +101,15 @@ style="width: {{ (predicted_grade/20)*100 }}%">
 </div>
 
 </div>
-<div class="card p-4 mb-4">
+<div class="card p-4 ">
+
+
+
+<h5>Student vs Class Average</h5>
+
+<canvas id="comparisonChart"></canvas>
+
+</div>
 
 <h5>AI Recommended Intervention</h5>
 
@@ -178,6 +186,46 @@ label:"Feature Importance",
 data:importance,
 backgroundColor:"#2563eb"
 }]
+}
+
+})
+
+let studentValues = [
+{{ student.G1 }},
+{{ student.G2 }},
+{{ student.studytime }},
+{{ student.failures }},
+{{ student.absences }}
+]
+
+let avgValues = [
+{{ avg_g1 }},
+{{ avg_g2 }},
+{{ avg_study }},
+{{ avg_fail }},
+{{ avg_abs }}
+]
+
+new Chart(document.getElementById("comparisonChart"),{
+
+type:"bar",
+
+data:{
+labels:["G1","G2","Study Time","Failures","Absences"],
+
+datasets:[
+{
+label:"Student",
+data:studentValues,
+backgroundColor:"#2563eb"
+},
+
+{
+label:"Class Average",
+data:avgValues,
+backgroundColor:"#94a3b8"
+}
+]
 }
 
 })

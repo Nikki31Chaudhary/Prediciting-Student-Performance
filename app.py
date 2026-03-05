@@ -319,13 +319,27 @@ def student_detail(student_id):
     else:
         risk="Low"
 
+    # Class averages
+    avg_g1 = round(df["G1"].mean(),2)
+    avg_g2 = round(df["G2"].mean(),2)
+    avg_abs = round(df["absences"].mean(),2)
+    avg_study = round(df["studytime"].mean(),2)
+    avg_fail = round(df["failures"].mean(),2)
+
     return render_template(
         "student_detail.html",
         student=student,
         predicted_grade=predicted_grade,
         risk=risk,
-        importance=importance.tolist()
-    )
+        importance=importance.tolist(),
+
+        avg_g1=avg_g1,
+        avg_g2=avg_g2,
+        avg_abs=avg_abs,
+        avg_study=avg_study,
+        avg_fail=avg_fail
+)
+    
 
 @app.route("/admin-analytics")
 def admin_analytics():
