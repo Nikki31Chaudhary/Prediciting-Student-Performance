@@ -324,6 +324,7 @@ border-radius:12px;
 margin-bottom:25px;
 box-shadow:0 6px 15px rgba(0,0,0,0.15);
 }
+
 </style>
 </head>
 
@@ -532,6 +533,14 @@ educators improve student outcomes.
 
 </div>
 
+<div class="card p-4 mb-4">
+
+<h6 class="section-title">AI Risk Heatmap</h6>
+
+<canvas id="riskHeatmap" height="160"></canvas>
+
+</div>
+
 <!-- TABLE -->
 <div class="card p-4">
     <h6 class="section-title">Student Risk Overview</h6>
@@ -649,6 +658,7 @@ educators improve student outcomes.
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
 <script>
+let students = {{ heatmap_data | tojson }};
 
 // DATATABLE
 var table;
@@ -813,6 +823,92 @@ document.addEventListener("DOMContentLoaded", function() {
 
 });
 
+// AI RISK HEATMAP
+// -------- HEATMAP DATA GENERATION --------
+
+let studyRisk = {
+1:{high:0,medium:0,low:0},
+2:{high:0,medium:0,low:0},
+3:{high:0,medium:0,low:0},
+4:{high:0,medium:0,low:0}
+};
+
+students.forEach(function(s){
+
+if(s.risk==="High"){
+studyRisk[s.studytime].high++;
+}
+else if(s.risk==="Medium"){
+studyRisk[s.studytime].medium++;
+}
+else{
+studyRisk[s.studytime].low++;
+}
+
+});
+
+new Chart(document.getElementById("riskHeatmap"),{
+
+type:'bar',
+
+data:{
+labels:["Studytime 1","Studytime 2","Studytime 3","Studytime 4"],
+
+datasets:[
+
+{
+label:"High Risk",
+data:[
+studyRisk[1].high,
+studyRisk[2].high,
+studyRisk[3].high,
+studyRisk[4].high
+],
+backgroundColor:"#dc3545"
+},
+
+{
+label:"Medium Risk",
+data:[
+studyRisk[1].medium,
+studyRisk[2].medium,
+studyRisk[3].medium,
+studyRisk[4].medium
+],
+backgroundColor:"#ffc107"
+},
+
+{
+label:"Low Risk",
+data:[
+studyRisk[1].low,
+studyRisk[2].low,
+studyRisk[3].low,
+studyRisk[4].low
+],
+backgroundColor:"#198754"
+}
+
+]
+
+},
+
+options:{
+responsive:true,
+plugins:{
+title:{
+display:true,
+text:"Risk Distribution by Study Time"
+}
+},
+scales:{
+x:{stacked:true},
+y:{stacked:true}
+}
+
+}
+
+});
 </script>
 
 

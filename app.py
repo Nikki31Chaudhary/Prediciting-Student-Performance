@@ -60,6 +60,7 @@ def signup():
 # ---------------- DASHBOARD ----------------
 @app.route("/dashboard")
 def dashboard():
+
     if "user" not in session:
         return redirect("/")
 
@@ -70,6 +71,7 @@ def dashboard():
     students = []
 
     for i in range(len(df)):
+
         predicted_grade = round(predictions[i], 2)
 
         if predicted_grade < 10:
@@ -77,10 +79,10 @@ def dashboard():
             suggestion = "Immediate academic counseling recommended."
         elif predicted_grade < 15:
             risk = "Medium"
-            suggestion = "Weekly monitoring and performance review advised."
+            suggestion = "Weekly monitoring advised."
         else:
             risk = "Low"
-            suggestion = "No intervention required. Maintain consistency."
+            suggestion = "No intervention required."
 
         students.append({
             "id": i,
@@ -95,20 +97,32 @@ def dashboard():
             "importance": importance.tolist()
         })
 
-        # Risk Summary Counts
-        high_count = sum(1 for s in students if s["risk"] == "High")
-        medium_count = sum(1 for s in students if s["risk"] == "Medium")
-        low_count = sum(1 for s in students if s["risk"] == "Low")
+    # Risk counts
+    high_count = sum(1 for s in students if s["risk"] == "High")
+    medium_count = sum(1 for s in students if s["risk"] == "Medium")
+    low_count = sum(1 for s in students if s["risk"] == "Low")
+
+    # Heatmap data
+    heatmap_data = []
+
+    for s in students:
+        heatmap_data.append({
+            "studytime": int(s["studytime"]),
+            "absences": int(s["absences"]),
+            "risk": str(s["risk"])
+        })
+  
 
     return render_template(
-    "dashboard.html",
-    students=students,
-    high_count=high_count,
-    medium_count=medium_count,
-    low_count=low_count,
-    role=session.get("role")
+        "dashboard.html",
+        students=students,
+        high_count=high_count,
+        medium_count=medium_count,
+        low_count=low_count,
+        heatmap_data=heatmap_data,
+        role=session.get("role")
+    )
 
-)
 
 # ---------------- MODEL INSIGHTS ----------------
 @app.route("/model-insights")
