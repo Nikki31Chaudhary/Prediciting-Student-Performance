@@ -864,7 +864,9 @@ studyRisk[2].high,
 studyRisk[3].high,
 studyRisk[4].high
 ],
-backgroundColor:"#dc3545"
+backgroundColor:"#ff9aa2",
+borderRadius:6,
+borderWidth:0
 },
 
 {
@@ -875,7 +877,9 @@ studyRisk[2].medium,
 studyRisk[3].medium,
 studyRisk[4].medium
 ],
-backgroundColor:"#ffc107"
+backgroundColor:"#ffd97d",
+borderRadius:6,
+borderWidth:0
 },
 
 {
@@ -886,7 +890,9 @@ studyRisk[2].low,
 studyRisk[3].low,
 studyRisk[4].low
 ],
-backgroundColor:"#198754"
+backgroundColor:"#9dd9d2",
+borderRadius:6,
+borderWidth:0
 }
 
 ]
@@ -895,8 +901,15 @@ backgroundColor:"#198754"
 
 options:{
 responsive:true,
+
+animation:{
+duration:1200,
+easing:"easeOutQuart"
+},
+
 plugins:{
 title:{
+position:"top",
 display:true,
 text:"Risk Distribution by Study Time"
 }
