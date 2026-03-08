@@ -506,23 +506,30 @@ educators improve student outcomes.
         </div>
     </div>
 </div>
-</div>
 
-<div class="alert alert-info">
-<b>Risk Threshold Logic:</b><br>
-High → Predicted Grade &lt; 10<br>
-Medium → 10 – 14<br>
-Low → ≥ 15<br>
-Grading Scale: 0–20
-</div>
+
+    <div class="alert alert-info">
+        <b>Risk Threshold Logic:</b><br>
+            High → Predicted Grade &lt; 10<br>
+            Medium → 10 – 14<br>
+            Low → ≥ 15<br>
+            Grading Scale: 0–20
+    </div>
 
 <!-- CHART -->
-<div class="card chart-card mb-4 text-center"></div>
+<!-- CHART -->
+<div class="card chart-card mb-4 text-center">
+
     <h6>Risk Distribution</h6>
-    <button class="btn btn-sm btn-outline-secondary mb-3" onclick="toggleChart()">Toggle Chart</button>
+
+    <button class="btn btn-sm btn-outline-secondary mb-3" onclick="toggleChart()">
+        Toggle Chart
+    </button>
+
     <div style="max-width:220px;margin:auto;">
         <canvas id="riskChart"></canvas>
     </div>
+
 </div>
 
 <!-- TABLE -->
