@@ -203,7 +203,7 @@ Interactive Web Dashboard
 
 ## 🔐 Login Page
 
-![Login Interface](screenshots/login.png)
+![Login Interface](https://github.com/Nikki31Chaudhary/Prediciting-Student-Performance/blob/0b9f43504f0c04751043830eae32452d3471665c/Screenshot%202026-03-11%20112238.png)
 
 Modern glassmorphism styled login page with role-based authentication.
 
