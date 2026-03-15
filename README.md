@@ -211,7 +211,7 @@ Modern glassmorphism styled login page with role-based authentication.
 
 ## 📊 AI Academic Early Warning Dashboard
 
-![Dashboard](screenshots/dashboard.png)
+![Dashboard](https://github.com/Nikki31Chaudhary/Prediciting-Student-Performance/blob/dcf2ce6d974fb378b41830b5b2bede71c50c9ec6/screencapture-127-0-0-1-5000-dashboard-2026-03-11-11_22_54.pdf)
 
 The dashboard provides a **complete academic risk monitoring system** including:
 
