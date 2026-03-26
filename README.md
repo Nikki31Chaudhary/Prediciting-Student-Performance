@@ -14,7 +14,7 @@ The system integrates **Machine Learning, Explainable AI, interactive dashboards
 
 ---
 
-# 📌 Project Overview
+# 📌 Project Overview:
 
 Traditional academic systems identify struggling students **only after final results**, when intervention is often too late.
 
@@ -30,7 +30,7 @@ The system transforms **reactive academic monitoring into predictive decision su
 
 ---
 
-# 🎯 Problem Statement
+# 🎯 Problem Statement:
 
 Most educational institutions lack tools to detect academic risk early.
 
@@ -51,7 +51,7 @@ This system solves these problems through:
 
 ---
 
-# 🧠 Machine Learning Pipeline
+# 🧠 Machine Learning Pipeline:
 
 The system uses **Random Forest algorithms** for both regression and classification.
 
@@ -82,7 +82,7 @@ The system uses **Random Forest algorithms** for both regression and classificat
 
 ---
 
-# 📊 Risk Classification Logic
+# 📊 Risk Classification Logic:
 
 Students are classified into risk categories based on predicted grade.
 
@@ -108,7 +108,7 @@ The dashboard also visualizes model performance using a **confusion matrix and a
 
 ---
 
-# 💡 Key System Features
+# 💡 Key System Features:
 
 ## 🔍 AI & Analytics
 
@@ -122,7 +122,7 @@ The dashboard also visualizes model performance using a **confusion matrix and a
 
 ---
 
-## 📊 Interactive Dashboard
+## 📊 Interactive Dashboard:
 
 The dashboard provides a **complete academic risk analytics interface** including:
 
@@ -143,7 +143,7 @@ with **395 students analyzed**.
 
 ---
 
-# 🔐 Authentication System
+# 🔐 Authentication System:
 
 The application includes a **multi-user role-based login system**.
 
@@ -164,7 +164,7 @@ Supported roles:
 
 ---
 
-# 🌗 UI / UX Design
+# 🌗 UI / UX Design:
 
 The application includes modern SaaS-style UI components:
 
@@ -177,7 +177,7 @@ The application includes modern SaaS-style UI components:
 
 ---
 
-# 🏗️ System Architecture
+# 🏗️ System Architecture:
 
 ```
 Dataset (CSV)
@@ -199,7 +199,7 @@ Interactive Web Dashboard
 
 ---
 
-# 📸 Application Screenshots
+# 📸 Application Screenshots:
 
 ## 🔐 Login Page
 
@@ -209,7 +209,7 @@ Modern glassmorphism styled login page with role-based authentication.
 
 ---
 
-## 📊 AI Academic Early Warning Dashboard
+## 📊 AI Academic Early Warning Dashboard:
 
 ![Dashboard](https://github.com/Nikki31Chaudhary/Prediciting-Student-Performance/blob/24bc78c202fc4284c09e700a2b56baa1f599a8ce/images/dashboard2.pdf)
 
@@ -231,7 +231,7 @@ These insights help educators **take proactive academic actions**.
 
 ---
 
-# 🛠️ Tech Stack
+# 🛠️ Tech Stack:
 
 ### Backend
 
