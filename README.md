@@ -365,6 +365,6 @@ This project demonstrates:
 * Explainable AI implementation
 * Full-stack web development
 * Role-based authentication systems
-* Professional dashboard design
+* Professional dashboard design.
 
 
