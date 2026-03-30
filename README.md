@@ -1,370 +1,236 @@
-
-
 # 🎓 AI-Based Student Performance Prediction & Early Academic Intervention System
 
-![Python](https://img.shields.io/badge/Python-3.10-blue)
-![Flask](https://img.shields.io/badge/Flask-Web%20Framework-black)
-![Machine Learning](https://img.shields.io/badge/Machine%20Learning-Random%20Forest-green)
-![Frontend](https://img.shields.io/badge/Frontend-Bootstrap%205-purple)
-![Status](https://img.shields.io/badge/Project-Academic%20AI%20System-orange)
+---
 
-An **AI-powered academic analytics platform** designed to predict student performance early in the semester and identify **at-risk students before academic failure occurs**.
+## 📌 Project Overview
 
-The system integrates **Machine Learning, Explainable AI, interactive dashboards, and role-based authentication** to help educators take **early academic intervention decisions**.
+This project is a full-stack AI-powered academic analytics system designed to predict student performance early in the semester and identify at-risk students before academic failure occurs.
+
+The platform integrates Machine Learning, interactive visualization, explainable AI techniques, and role-based authentication to provide educators with actionable insights for proactive intervention.
+
+This system transforms traditional reactive academic monitoring into a predictive and decision-support framework.
 
 ---
 
-# 📌 Project Overview:
+## 🎯 Problem Statement
 
-Traditional academic systems identify struggling students **only after final results**, when intervention is often too late.
+Conventional academic evaluation systems identify struggling students only after significant academic decline.
 
-This project introduces a **predictive academic monitoring system** that allows educators to:
+This project introduces:
 
-* Predict final grades early
-* Identify at-risk students
-* Analyze academic patterns
-* Provide explainable AI insights
-* Visualize student risk distribution
-
-The system transforms **reactive academic monitoring into predictive decision support**.
+- Early grade prediction using ML
+- Automated risk classification
+- Explainable AI insights
+- Fairness & bias analysis
+- Interactive educator dashboard
 
 ---
 
-# 🎯 Problem Statement:
+## 🧠 Machine Learning Pipeline
 
-Most educational institutions lack tools to detect academic risk early.
+### 🔹 Models Used
 
-Common issues include:
-
-* Late identification of struggling students
-* No predictive analytics system
-* Limited transparency in evaluation
-* No automated risk classification
-
-This system solves these problems through:
-
-✔ Early **Machine Learning grade prediction**
-✔ **Automated student risk classification**
-✔ **Explainable AI insights**
-✔ **Fairness and bias analysis**
-✔ **Interactive educator dashboard**
+- **Random Forest Regressor** → Final Grade Prediction  
+- **Random Forest Classifier** → Risk Category Prediction  
 
 ---
 
-# 🧠 Machine Learning Pipeline:
+### 🔹 Input Features
 
-The system uses **Random Forest algorithms** for both regression and classification.
-
-### Models Used
-
-| Model                    | Purpose                  |
-| ------------------------ | ------------------------ |
-| Random Forest Regressor  | Predict Final Grade (G3) |
-| Random Forest Classifier | Predict Risk Category    |
+- G1 (First Internal Grade)  
+- G2 (Second Internal Grade)  
+- Study Time  
+- Past Failures  
+- Absences  
 
 ---
 
-### Input Features
+### 🔹 Target Variable
 
-| Feature       | Description                    |
-| ------------- | ------------------------------ |
-| G1            | First internal grade           |
-| G2            | Second internal grade          |
-| Study Time    | Weekly study hours             |
-| Past Failures | Number of past failed subjects |
-| Absences      | Total class absences           |
+- G3 (Final Grade)  
 
 ---
 
-### Target Variable
+## 📊 Risk Classification Logic
 
-**G3 → Final Grade (0–20 scale)**
+Based on predicted grade (0–20 scale):
 
----
-
-# 📊 Risk Classification Logic:
-
-Students are classified into risk categories based on predicted grade.
-
-| Risk Level     | Grade Range |
-| -------------- | ----------- |
-| 🔴 High Risk   | Grade < 10  |
-| 🟡 Medium Risk | 10 – 14     |
-| 🟢 Low Risk    | ≥ 15        |
-
-This helps teachers **identify vulnerable students early**.
+- **High Risk** → Grade < 10  
+- **Medium Risk** → 10 – 14  
+- **Low Risk** → ≥ 15  
 
 ---
 
-# 📈 Model Performance
+## 📈 Model Performance
 
-| Metric                   | Score                        |
-| ------------------------ | ---------------------------- |
-| Mean Squared Error (MSE) | ~2.63                        |
-| R² Score                 | Strong predictive capability |
-| Classification Accuracy  | ~87%                         |
-
-The dashboard also visualizes model performance using a **confusion matrix and analytics charts**.
+- Mean Squared Error (MSE): ~2.63  
+- R² Score: Strong predictive capability  
+- Classification Accuracy: ~87%  
+- Confusion Matrix integrated into dashboard  
 
 ---
 
-# 💡 Key System Features:
+## 💡 Key System Features
 
-## 🔍 AI & Analytics
+### 🔍 AI & Analytics
 
-* Final grade prediction using Machine Learning
-* Student risk classification
-* AI confidence score
-* Explainability engine (feature contribution analysis)
-* SHAP-style approximation logic
-* Bias detection (gender & age fairness analysis)
-* Confusion matrix visualization
-
----
-
-## 📊 Interactive Dashboard:
-
-The dashboard provides a **complete academic risk analytics interface** including:
-
-* KPI summary cards
-* Risk percentage indicators
-* Risk distribution charts
-* Student risk analytics table
-* AI confidence scores
-* Intervention recommendations
-
-According to the dashboard analytics:
-
-* **High Risk Students → 43%**
-* **Medium Risk Students → 40%**
-* **Low Risk Students → 17%**
-
-with **395 students analyzed**. 
+- Risk Prediction (Regression + Classification)  
+- AI Confidence Score  
+- Modal-Based Explainability (Feature Contribution Analysis)  
+- SHAP-style approximation logic  
+- Fairness Analysis (Gender & Age-group bias evaluation)  
+- Confusion Matrix Visualization  
 
 ---
 
-# 🔐 Authentication System:
+### 📊 Interactive Dashboard
 
-The application includes a **multi-user role-based login system**.
-
-Features include:
-
-* Glassmorphism login interface
-* Sign In / Sign Up toggle
-* Demo accounts
-* Role-based access control
-* Session tracking
-* Conditional feature access
-
-Supported roles:
-
-* Admin
-* Teacher
-* Student
+- Animated KPI Cards  
+- Risk Distribution (Pie / Bar Toggle)  
+- DataTable Filtering & Search  
+- Student Progress Visualization  
+- Premium Gradient Table Styling  
+- CSV Report Export (Admin-only)  
 
 ---
 
-# 🌗 UI / UX Design:
+### 🔐 Authentication System
 
-The application includes modern SaaS-style UI components:
-
-* Glassmorphism login page
-* Animated gradient background
-* Light / Dark theme toggle
-* Smooth hover effects
-* Premium card-based layout
-* Fully responsive design (Bootstrap 5)
+- Premium Glassmorphism Login Interface  
+- Sign In / Sign Up Toggle  
+- Multi-user Demo Accounts  
+- Role-Based Access Control (Admin / Teacher / Student)  
+- Session Tracking (Login Time Displayed)  
+- Conditional Feature Visibility (Export restricted to Admin)  
 
 ---
 
-# 🏗️ System Architecture:
+### 🌗 UI/UX Enhancements
 
-```
-Dataset (CSV)
-      ↓
-Data Preprocessing
-      ↓
-Feature Selection
-      ↓
-Random Forest Model Training
-      ↓
-Risk Classification Layer
-      ↓
-Explainability Engine
-      ↓
-Flask Backend API
-      ↓
-Interactive Web Dashboard
-```
+- SaaS-style Glassmorphism Login  
+- Animated Gradient Background  
+- Light/Dark Theme Toggle  
+- Smooth Hover & Transition Effects  
+- Premium Shadow & Card Design  
+- Responsive Layout (Bootstrap 5)  
 
 ---
 
-# 📸 Application Screenshots:
+## 🏗️ System Architecture
 
-## 🔐 Login Page
-
-![Login Interface](https://github.com/Nikki31Chaudhary/Prediciting-Student-Performance/blob/0b9f43504f0c04751043830eae32452d3471665c/Screenshot%202026-03-11%20112238.png)
-
-Modern glassmorphism styled login page with role-based authentication.
-
----
-
-## 📊 AI Academic Early Warning Dashboard:
-
-![Dashboard](https://github.com/Nikki31Chaudhary/Prediciting-Student-Performance/blob/24bc78c202fc4284c09e700a2b56baa1f599a8ce/images/dashboard2.pdf)
-
-The dashboard provides a **complete academic risk monitoring system** including:
-
-* Student risk percentage indicators
-* Risk distribution charts
-* Study-time risk heatmaps
-* AI confidence scores
-* Student intervention recommendations
-
-The system highlights students who require:
-
-* Immediate academic counseling
-* Weekly monitoring
-* No intervention
-
-These insights help educators **take proactive academic actions**. 
+1. Data Collection (CSV Dataset)  
+2. Feature Selection & Processing  
+3. Model Training (Random Forest)  
+4. Risk Classification Layer  
+5. Explainability Engine  
+6. Flask Backend API  
+7. Interactive Frontend Dashboard  
 
 ---
 
-# 🛠️ Tech Stack:
+## 🛠️ Tech Stack
 
 ### Backend
-
-* Python
-* Flask
-* Pandas
-* Scikit-learn
-* Joblib
-
----
+- Python  
+- Flask  
+- Pandas  
+- Scikit-learn  
+- Joblib  
 
 ### Frontend
-
-* HTML5
-* CSS3
-* Bootstrap 5
-* Chart.js
-* DataTables
-* JavaScript
-
----
+- HTML5  
+- CSS3  
+- Bootstrap 5  
+- Chart.js  
+- DataTables  
+- JavaScript  
 
 ### Authentication
-
-* Session-based authentication
-* Role-based access control
-
----
+- Session-Based Authentication  
+- Role-Based Access Control  
 
 ### Version Control
-
-* Git
-* GitHub
+- Git  
+- GitHub  
 
 ---
 
-# ▶️ How to Run Locally
 
-### 1️⃣ Clone Repository
+▶️ How to Run Locally
+
+1️⃣ Clone Repository
 
 ```bash
 git clone https://github.com/Nikki31Chaudhary/Prediciting-Student-Performance.git
 cd Prediciting-Student-Performance
-```
 
----
-
-### 2️⃣ Install Dependencies
-
-```bash
+2️⃣Install Dependencies
 pip install flask pandas scikit-learn joblib
-```
 
----
-
-### 3️⃣ Run Application
-
-```bash
+3️⃣ Run Application
 python app.py
-```
 
----
 
-### Open Browser
 
-```
+Open browser:
+
 http://127.0.0.1:5000
-```
 
----
+🔐 Demo Login Credentials
+Username	Password
+admin	123456
+teacher	123456
+student	123456
 
-# 🔐 Demo Login Credentials
+🌐 Deployment (Planned Phase)
+The system is structured for deployment using:
 
-| Username | Password |
-| -------- | -------- |
-| admin    | 123456   |
-| teacher  | 123456   |
-| student  | 123456   |
+Render / Railway / AWS
 
----
+Gunicorn (Production Server)
 
-# 🌐 Deployment (Future Scope)
+Environment Variables for Secret Keys
 
-Planned deployment platforms:
+Scalable Cloud Infrastructure
 
-* Render
-* Railway
-* AWS
+📈 Expected Impact
+Early detection of academically vulnerable students
 
-Production environment setup will include:
+Improved retention rates
 
-* Gunicorn server
-* Environment variables
-* Scalable cloud infrastructure
+Transparent AI-based academic evaluation
 
----
+Data-driven decision support for educators
 
-# 📈 Expected Impact
+🔮 Future Enhancements
+Database-backed user authentication (SQLite/PostgreSQL)
 
-* Early detection of academically vulnerable students
-* Improved student success rates
-* Data-driven academic decision making
-* Transparent AI-based evaluation
+Password hashing & secure authentication
 
----
+OpenAI-powered personalized academic recommendations
 
-# 🔮 Future Enhancements
+PDF analytics export
 
-* Database authentication (SQLite / PostgreSQL)
-* Secure password hashing
-* AI-powered academic recommendations
-* PDF analytics export
-* Real-time model retraining
-* Advanced bias auditing
-* CI/CD deployment pipeline
+Real-time model retraining
 
----
+Advanced fairness & bias auditing
 
-# 👩‍💻 Developed By
+CI/CD deployment pipeline
 
-**Shristi Upadhyay**
-**Nikki Chaudhary**
+👩‍💻 Developed By
+Shristi Upadhyay
 
----
+Nikki Chaudhary
 
-# 📜 Academic Portfolio Project
-
+📜 Academic Portfolio Project
 This project demonstrates:
 
-* Machine Learning deployment
-* Explainable AI implementation
-* Full-stack web development
-* Role-based authentication systems
-* Professional dashboard design.
+Machine Learning model deployment
 
+Explainable AI integration
 
+Full-stack dashboard development
+
+Role-based authentication
+
+Professional UI/UX Implementation
