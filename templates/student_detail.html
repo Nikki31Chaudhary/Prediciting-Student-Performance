@@ -1,236 +1,233 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-
-<title>Student Analytics</title>
-
+<meta charset="UTF-8">
+<title>Student Risk Analysis</title>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&family=Fraunces:wght@300;600&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
 <style>
+:root{--bg:#f7f6f2;--surface:#ffffff;--surface2:#f0eeeb;--border:rgba(0,0,0,0.08);--text:#1a1816;--text2:#6b6560;--text3:#9b958f;--accent:#1a56db;--red:#e63946;--amber:#e9852a;--green:#2a9d5c;--red-bg:#fdf0f0;--amber-bg:#fef6ec;--green-bg:#edf8f2;--red-soft:#f5c6c9;--amber-soft:#fbd9b4;--green-soft:#a8dfc0;--radius:14px;--radius-sm:8px;--sidebar-w:230px;--transition:0.25s cubic-bezier(0.4,0,0.2,1);}
+body.dark{--bg:#0d0c0b;--surface:#1c1a18;--surface2:#252220;--border:rgba(255,255,255,0.07);--text:#f0ede8;--text2:#9b958f;--text3:#6b6560;--accent:#4f84f5;--red-bg:#2a1212;--amber-bg:#2a1c0a;--green-bg:#0a2015;--red-soft:#5c2020;--amber-soft:#5c3010;--green-soft:#10402a;}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);transition:background var(--transition),color var(--transition);min-height:100vh;}
+.sidebar{position:fixed;left:0;top:0;width:var(--sidebar-w);height:100vh;background:var(--surface);border-right:1px solid var(--border);display:flex;flex-direction:column;padding:28px 20px;z-index:200;transition:background var(--transition),border-color var(--transition);}
+.sidebar-logo{display:flex;align-items:center;gap:10px;margin-bottom:32px;padding-bottom:24px;border-bottom:1px solid var(--border);}
+.sidebar-logo-icon{width:36px;height:36px;background:var(--accent);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;}
+.sidebar-logo-text{font-family:'Fraunces',serif;font-size:15px;font-weight:600;color:var(--text);line-height:1.2;}
+.sidebar-logo-text span{display:block;font-size:11px;font-family:'DM Sans',sans-serif;font-weight:400;color:var(--text2);}
+.nav-section{font-size:10px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--text3);margin:16px 0 8px 8px;}
+.sidebar a{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:var(--radius-sm);color:var(--text2);text-decoration:none;font-size:13.5px;transition:all var(--transition);margin-bottom:2px;}
+.sidebar a:hover{background:var(--surface2);color:var(--text);}
+.sidebar a.active{background:var(--accent);color:#fff;font-weight:500;}
+.sidebar-footer{margin-top:auto;padding-top:20px;border-top:1px solid var(--border);}
+.dark-toggle{display:flex;align-items:center;justify-content:space-between;padding:10px 12px;border-radius:var(--radius-sm);cursor:pointer;background:var(--surface2);border:1px solid var(--border);}
+.dark-toggle-label{font-size:12.5px;color:var(--text2);font-weight:500;}
+.track{width:34px;height:18px;background:var(--border);border-radius:999px;position:relative;transition:background 0.3s;border:1px solid var(--border);flex-shrink:0;}
+.track.on{background:var(--accent);border-color:var(--accent);}
+.thumb{width:12px;height:12px;background:#fff;border-radius:50%;position:absolute;top:2px;left:2px;transition:transform 0.3s;}
+.track.on .thumb{transform:translateX(16px);}
+.content{margin-left:var(--sidebar-w);padding:32px 36px;min-height:100vh;}
+.page-header{margin-bottom:28px;padding-bottom:24px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:16px;}
+.back-btn{display:inline-flex;align-items:center;gap:6px;font-size:13px;color:var(--text2);text-decoration:none;padding:7px 14px;border-radius:var(--radius-sm);background:var(--surface2);border:1px solid var(--border);transition:all var(--transition);white-space:nowrap;}
+.back-btn:hover{background:var(--accent);color:#fff;border-color:var(--accent);}
+.page-header h1{font-family:'Fraunces',serif;font-size:26px;font-weight:600;color:var(--text);}
+.panel{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:24px;margin-bottom:20px;transition:background var(--transition),border-color var(--transition);}
+.panel-title{font-size:13px;font-weight:600;color:var(--text);margin-bottom:20px;}
 
-body{
-background:#f1f5f9;
-}
+/* PREDICTION HERO */
+.prediction-hero{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:20px;}
+.grade-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:28px;text-align:center;}
+.grade-label{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;color:var(--text3);margin-bottom:12px;}
+.grade-value{font-family:'DM Mono',monospace;font-size:52px;font-weight:500;color:var(--text);line-height:1;}
+.grade-value span{font-size:20px;color:var(--text3);}
+.risk-badge{display:inline-flex;align-items:center;gap:8px;padding:8px 18px;border-radius:999px;font-size:14px;font-weight:600;margin-top:14px;}
+.risk-badge::before{content:'';width:8px;height:8px;border-radius:50%;background:currentColor;}
+.risk-badge.high{background:var(--red-bg);color:var(--red);border:1px solid var(--red-soft);}
+.risk-badge.medium{background:var(--amber-bg);color:var(--amber);border:1px solid var(--amber-soft);}
+.risk-badge.low{background:var(--green-bg);color:var(--green);border:1px solid var(--green-soft);}
+.perf-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:28px;display:flex;flex-direction:column;justify-content:center;}
+.perf-label{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;color:var(--text3);margin-bottom:14px;}
+.perf-bar-bg{width:100%;height:12px;background:var(--surface2);border-radius:999px;overflow:hidden;margin-bottom:10px;}
+.perf-bar{height:100%;border-radius:999px;transition:width 1s ease;}
+.perf-pct{font-family:'DM Mono',monospace;font-size:28px;font-weight:500;color:var(--text);}
 
-.container-box{
-max-width:900px;
-margin:auto;
-margin-top:40px;
-}
+/* FEATURES GRID */
+.features-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:20px;}
+.feat-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm);padding:16px;text-align:center;transition:all var(--transition);}
+.feat-card:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,0.08);}
+.feat-name{font-size:10.5px;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;color:var(--text3);margin-bottom:8px;}
+.feat-val{font-family:'DM Mono',monospace;font-size:24px;font-weight:500;color:var(--text);}
 
-.card{
-border-radius:14px;
-box-shadow:0 10px 25px rgba(0,0,0,0.1);
-}
+/* CHARTS */
+.chart-row{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:20px;}
 
+/* INTERVENTION */
+.intervention-panel{margin-bottom:20px;}
+.int-list{list-style:none;display:flex;flex-direction:column;gap:10px;}
+.int-list li{display:flex;align-items:flex-start;gap:10px;font-size:13.5px;color:var(--text2);line-height:1.5;}
+.int-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0;margin-top:6px;}
+.int-dot.red{background:var(--red);}
+.int-dot.amber{background:var(--amber);}
+.int-dot.green{background:var(--green);}
+
+/* FEEDBACK */
+.feedback-box{border-radius:var(--radius);padding:20px 22px;border:1px solid transparent;}
+.feedback-box.high{background:var(--red-bg);border-color:var(--red-soft);}
+.feedback-box.medium{background:var(--amber-bg);border-color:var(--amber-soft);}
+.feedback-box.low{background:var(--green-bg);border-color:var(--green-soft);}
+.feedback-box .ftitle{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:8px;}
+.feedback-box.high .ftitle{color:var(--red);}
+.feedback-box.medium .ftitle{color:var(--amber);}
+.feedback-box.low .ftitle{color:var(--green);}
+.feedback-box p{font-size:13.5px;line-height:1.6;margin:0;color:var(--text2);}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px);}to{opacity:1;transform:translateY(0);}}
+.fade-up{animation:fadeUp 0.5s cubic-bezier(0.4,0,0.2,1) both;}
+.d1{animation-delay:0.05s;}.d2{animation-delay:0.10s;}.d3{animation-delay:0.15s;}.d4{animation-delay:0.20s;}.d5{animation-delay:0.25s;}
 </style>
-
 </head>
-
 <body>
+<aside class="sidebar">
+  <div class="sidebar-logo">
+    <div class="sidebar-logo-icon">🎓</div>
+    <div class="sidebar-logo-text">EarlyAlert AI<span>Academic Risk System</span></div>
+  </div>
+  <div class="nav-section">Main</div>
+  <a href="/dashboard"><span>📈</span> Dashboard</a>
+  <div class="nav-section">Analytics</div>
+  <a href="/model-insights"><span>🧠</span> Model Insights</a>
+  <a href="/fairness-analysis"><span>⚖</span> Fairness Analysis</a>
+  <a href="/classification-insights"><span>📚</span> Classification</a>
+  <div class="nav-section">Data</div>
+  <a href="/upload-data"><span>📂</span> Upload Dataset</a>
+  <div class="sidebar-footer">
+    <a href="/logout" style="color:var(--red)!important;"><span>🚪</span> Logout</a>
+    <div class="dark-toggle mt-3" onclick="toggleDark()">
+      <span class="dark-toggle-label" id="toggleLabel">Light mode</span>
+      <div class="track" id="track"><div class="thumb"></div></div>
+    </div>
+  </div>
+</aside>
 
+<main class="content">
+  <div class="page-header fade-up">
+    <a href="/dashboard" class="back-btn">← Back</a>
+    <h1>Student Risk Analysis</h1>
+  </div>
 
+  <!-- Prediction Hero -->
+  <div class="prediction-hero fade-up d1">
+    <div class="grade-card">
+      <div class="grade-label">Predicted Final Grade</div>
+      <div class="grade-value">{{ predicted_grade }}<span>/20</span></div>
+      <div>
+        {% if risk=="High" %}<span class="risk-badge high">High Risk</span>
+        {% elif risk=="Medium" %}<span class="risk-badge medium">Medium Risk</span>
+        {% else %}<span class="risk-badge low">Low Risk</span>{% endif %}
+      </div>
+    </div>
+    <div class="perf-card">
+      <div class="perf-label">Performance Indicator</div>
+      <div class="perf-bar-bg">
+        <div class="perf-bar" id="perfBar"
+          style="width:0%;background:{% if risk=='High' %}var(--red){% elif risk=='Medium' %}var(--amber){% else %}var(--green){% endif %}">
+        </div>
+      </div>
+      <div class="perf-pct">{{ ((predicted_grade/20)*100)|round(1) }}%</div>
+      <div style="font-size:12px;color:var(--text3);margin-top:6px;">Of maximum possible score</div>
+    </div>
+  </div>
 
-<div class="container-box">
+  <!-- Student Features -->
+  <div class="features-grid fade-up d2">
+    <div class="feat-card"><div class="feat-name">G1</div><div class="feat-val">{{ student.G1 }}</div></div>
+    <div class="feat-card"><div class="feat-name">G2</div><div class="feat-val">{{ student.G2 }}</div></div>
+    <div class="feat-card"><div class="feat-name">Study Time</div><div class="feat-val">{{ student.studytime }}</div></div>
+    <div class="feat-card"><div class="feat-name">Failures</div><div class="feat-val">{{ student.failures }}</div></div>
+    <div class="feat-card"><div class="feat-name">Absences</div><div class="feat-val">{{ student.absences }}</div></div>
+  </div>
 
-<h3 class="text-center mb-4">Student Risk Analysis</h3>
+  <!-- Charts -->
+  <div class="chart-row fade-up d3">
+    <div class="panel">
+      <div class="panel-title">Feature Contribution</div>
+      <canvas id="importanceChart" height="200"></canvas>
+    </div>
+    <div class="panel">
+      <div class="panel-title">Student vs Class Average</div>
+      <canvas id="comparisonChart" height="200"></canvas>
+    </div>
+  </div>
 
-<div class="card p-4 mb-4 text-center">
-
-<h4>Prediction Summary</h4>
-
-<h2>{{ predicted_grade }}/20</h2>
-
-{% if risk=="High" %}
-<span class="badge bg-danger">High Risk</span>
-{% elif risk=="Medium" %}
-<span class="badge bg-warning">Medium Risk</span>
-{% else %}
-<span class="badge bg-success">Low Risk</span>
-{% endif %}
-
-</div>
-
-<div class="card p-4 mb-4">
-
-<h5>Student Features</h5>
-
-<ul>
-
-<li>G1: {{ student.G1 }}</li>
-<li>G2: {{ student.G2 }}</li>
-<li>Study Time: {{ student.studytime }}</li>
-<li>Failures: {{ student.failures }}</li>
-<li>Absences: {{ student.absences }}</li>
-
-</ul>
-
-</div>
-
-<div class="card p-4 mb-4">
-
-<h5>Performance Indicator</h5>
-
-<div class="progress">
-
-{% if risk=="High" %}
-<div class="progress-bar bg-danger"
-{% elif risk=="Medium" %}
-<div class="progress-bar bg-warning"
-{% else %}
-<div class="progress-bar bg-success"
-{% endif %}
-
-style="width: {{ (predicted_grade/20)*100 }}%">
-
-{{ (predicted_grade/20*100)|round(1) }}%
-
-</div>
-
-</div>
-
-</div>
-
-<div class="card p-4">
-
-<h5>Feature Contribution Analysis</h5>
-
-<canvas id="importanceChart"></canvas>
-
-</div>
-
-
-<div class="card p-4 ">
-
-
-
-<h5>Student vs Class Average</h5>
-
-<canvas id="comparisonChart"></canvas>
-
-</div>
-
-<h5>AI Recommended Intervention</h5>
-
-<ul>
-
-{% if risk=="High" %}
-
-<li>Immediate academic counseling recommended.</li>
-<li>Provide structured tutoring sessions.</li>
-<li>Monitor attendance closely to reduce absences.</li>
-<li>Create a weekly study plan for the student.</li>
-
-{% elif risk=="Medium" %}
-
-<li>Encourage regular study habits to improve performance.</li>
-<li>Review weak subject areas identified from internal exams.</li>
-<li>Provide light mentoring or peer learning sessions.</li>
-<li>Track progress in upcoming assessments.</li>
-
-{% else %}
-
-<li>Good academic performance observed.</li>
-<li>Encourage participation in advanced learning activities.</li>
-<li>Maintain consistent study routine.</li>
-<li>Provide opportunities for skill development.</li>
-
-{% endif %}
-
-</ul>
-
-
-
-<div class="card p-4 mb-4">
-
-<h5>AI Feedback</h5>
-
-{% if risk=="High" %}
-
-<p class="text-danger">
-The student is currently at high academic risk. Early intervention such as tutoring, mentoring, and improved attendance can significantly improve performance.
-</p>
-
-{% elif risk=="Medium" %}
-
-<p class="text-warning">
-The student is performing at a moderate level. With better consistency in study time and improved exam preparation, the student can achieve higher grades.
-</p>
-
-{% else %}
-
-<p class="text-success">
-Good going! The student is performing well academically. Encourage them to maintain their study habits and explore advanced learning opportunities.
-</p>
-
-{% endif %}
-
-</div>
-
+  <!-- Intervention + Feedback -->
+  <div class="chart-row fade-up d4">
+    <div class="panel">
+      <div class="panel-title">AI Recommended Interventions</div>
+      <ul class="int-list">
+        {% if risk=="High" %}
+        <li><span class="int-dot red"></span>Immediate academic counseling recommended.</li>
+        <li><span class="int-dot red"></span>Provide structured tutoring sessions.</li>
+        <li><span class="int-dot red"></span>Monitor attendance closely to reduce absences.</li>
+        <li><span class="int-dot red"></span>Create a weekly study plan for the student.</li>
+        {% elif risk=="Medium" %}
+        <li><span class="int-dot amber"></span>Encourage regular study habits to improve performance.</li>
+        <li><span class="int-dot amber"></span>Review weak subject areas from internal exams.</li>
+        <li><span class="int-dot amber"></span>Provide light mentoring or peer learning sessions.</li>
+        <li><span class="int-dot amber"></span>Track progress in upcoming assessments.</li>
+        {% else %}
+        <li><span class="int-dot green"></span>Good academic performance observed.</li>
+        <li><span class="int-dot green"></span>Encourage participation in advanced learning activities.</li>
+        <li><span class="int-dot green"></span>Maintain consistent study routine.</li>
+        <li><span class="int-dot green"></span>Provide opportunities for skill development.</li>
+        {% endif %}
+      </ul>
+    </div>
+    <div class="panel">
+      <div class="panel-title">AI Feedback</div>
+      <div class="feedback-box {% if risk=='High' %}high{% elif risk=='Medium' %}medium{% else %}low{% endif %}">
+        <div class="ftitle">
+          {% if risk=="High" %}⚠ High Risk Alert
+          {% elif risk=="Medium" %}📊 Moderate Performance
+          {% else %}✅ Performing Well{% endif %}
+        </div>
+        <p>
+          {% if risk=="High" %}The student is currently at high academic risk. Early intervention such as tutoring, mentoring, and improved attendance can significantly improve performance.
+          {% elif risk=="Medium" %}The student is performing at a moderate level. With better consistency in study time and improved exam preparation, the student can achieve higher grades.
+          {% else %}Good going! The student is performing well academically. Encourage them to maintain their study habits and explore advanced learning opportunities.{% endif %}
+        </p>
+      </div>
+    </div>
+  </div>
+</main>
 
 <script>
+function applyDark(on){document.body.classList.toggle('dark',on);document.getElementById('track').classList.toggle('on',on);document.getElementById('toggleLabel').textContent=on?'Dark mode':'Light mode';localStorage.setItem('dm',on?'1':'0');}
+function toggleDark(){applyDark(!document.body.classList.contains('dark'));}
+(function(){if(localStorage.getItem('dm')==='1')applyDark(true);})();
 
-let importance = {{ importance|tojson }}
+// Animate perf bar
+setTimeout(()=>{document.getElementById('perfBar').style.width='{{ ((predicted_grade/20)*100)|round(1) }}%';},200);
 
-let labels = ["G1","G2","Study Time","Failures","Absences"]
+const importance={{ importance|tojson }};
+const impColors=importance.map(v=>v>0.5?'#1a56db':v>0.1?'#e9852a':'#2a9d5c');
+new Chart(document.getElementById('importanceChart'),{
+  type:'bar',
+  data:{labels:['G1','G2','Study Time','Failures','Absences'],datasets:[{label:'Feature Importance',data:importance,backgroundColor:impColors,borderRadius:8,borderWidth:0}]},
+  options:{responsive:true,plugins:{legend:{display:false}},scales:{x:{grid:{display:false}},y:{grid:{color:'rgba(0,0,0,0.04)'}}}}
+});
 
-new Chart(document.getElementById("importanceChart"),{
-
-type:"bar",
-
-data:{
-labels:labels,
-datasets:[{
-label:"Feature Importance",
-data:importance,
-backgroundColor:"#2563eb"
-}]
-}
-
-})
-
-let studentValues = [
-{{ student.G1 }},
-{{ student.G2 }},
-{{ student.studytime }},
-{{ student.failures }},
-{{ student.absences }}
-]
-
-let avgValues = [
-{{ avg_g1 }},
-{{ avg_g2 }},
-{{ avg_study }},
-{{ avg_fail }},
-{{ avg_abs }}
-]
-
-new Chart(document.getElementById("comparisonChart"),{
-
-type:"bar",
-
-data:{
-labels:["G1","G2","Study Time","Failures","Absences"],
-
-datasets:[
-{
-label:"Student",
-data:studentValues,
-backgroundColor:"#2563eb"
-},
-
-{
-label:"Class Average",
-data:avgValues,
-backgroundColor:"#94a3b8"
-}
-]
-}
-
-})
-
+new Chart(document.getElementById('comparisonChart'),{
+  type:'bar',
+  data:{
+    labels:['G1','G2','Study Time','Failures','Absences'],
+    datasets:[
+      {label:'Student',data:[{{ student.G1 }},{{ student.G2 }},{{ student.studytime }},{{ student.failures }},{{ student.absences }}],backgroundColor:'#1a56db',borderRadius:8,borderWidth:0},
+      {label:'Class Avg',data:[{{ avg_g1 }},{{ avg_g2 }},{{ avg_study }},{{ avg_fail }},{{ avg_abs }}],backgroundColor:'#d1d5db',borderRadius:8,borderWidth:0}
+    ]
+  },
+  options:{responsive:true,plugins:{legend:{position:'top',labels:{boxWidth:10,font:{family:'DM Sans',size:12}}}},scales:{x:{grid:{display:false}},y:{grid:{color:'rgba(0,0,0,0.04)'}}}}
+});
 </script>
-
 </body>
 </html>
