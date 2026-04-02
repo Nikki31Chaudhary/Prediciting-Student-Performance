@@ -1,224 +1,261 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-
+<meta charset="UTF-8">
 <title>Admin Analytics</title>
-
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&family=Fraunces:wght@300;600&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
 <style>
+:root{--bg:#f7f6f2;--surface:#ffffff;--surface2:#f0eeeb;--border:rgba(0,0,0,0.08);--text:#1a1816;--text2:#6b6560;--text3:#9b958f;--accent:#1a56db;--red:#e63946;--amber:#e9852a;--green:#2a9d5c;--red-bg:#fdf0f0;--amber-bg:#fef6ec;--green-bg:#edf8f2;--red-soft:#f5c6c9;--amber-soft:#fbd9b4;--green-soft:#a8dfc0;--radius:14px;--radius-sm:8px;--sidebar-w:230px;--transition:0.25s cubic-bezier(0.4,0,0.2,1);}
+body.dark{--bg:#0d0c0b;--surface:#1c1a18;--surface2:#252220;--border:rgba(255,255,255,0.07);--text:#f0ede8;--text2:#9b958f;--text3:#6b6560;--accent:#4f84f5;--red-bg:#2a1212;--amber-bg:#2a1c0a;--green-bg:#0a2015;--red-soft:#5c2020;--amber-soft:#5c3010;--green-soft:#10402a;}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);transition:background var(--transition),color var(--transition);min-height:100vh;}
 
-body{
-background:#f1f5f9;
-}
+/* SIDEBAR */
+.sidebar{position:fixed;left:0;top:0;width:var(--sidebar-w);height:100vh;background:var(--surface);border-right:1px solid var(--border);display:flex;flex-direction:column;padding:28px 20px;z-index:200;transition:background var(--transition),border-color var(--transition);}
+.sidebar-logo{display:flex;align-items:center;gap:10px;margin-bottom:32px;padding-bottom:24px;border-bottom:1px solid var(--border);}
+.sidebar-logo-icon{width:36px;height:36px;background:var(--accent);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;}
+.sidebar-logo-text{font-family:'Fraunces',serif;font-size:15px;font-weight:600;color:var(--text);line-height:1.2;}
+.sidebar-logo-text span{display:block;font-size:11px;font-family:'DM Sans',sans-serif;font-weight:400;color:var(--text2);}
+.nav-section{font-size:10px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--text3);margin:16px 0 8px 8px;}
+.sidebar a{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:var(--radius-sm);color:var(--text2);text-decoration:none;font-size:13.5px;transition:all var(--transition);margin-bottom:2px;}
+.sidebar a:hover{background:var(--surface2);color:var(--text);}
+.sidebar a.active{background:var(--accent);color:#fff;font-weight:500;}
+.sidebar-footer{margin-top:auto;padding-top:20px;border-top:1px solid var(--border);}
+.dark-toggle{display:flex;align-items:center;justify-content:space-between;padding:10px 12px;border-radius:var(--radius-sm);cursor:pointer;background:var(--surface2);border:1px solid var(--border);}
+.dark-toggle-label{font-size:12.5px;color:var(--text2);font-weight:500;}
+.track{width:34px;height:18px;background:var(--border);border-radius:999px;position:relative;transition:background 0.3s;border:1px solid var(--border);flex-shrink:0;}
+.track.on{background:var(--accent);border-color:var(--accent);}
+.thumb{width:12px;height:12px;background:#fff;border-radius:50%;position:absolute;top:2px;left:2px;transition:transform 0.3s;}
+.track.on .thumb{transform:translateX(16px);}
 
-.container-box{
-max-width:1100px;
-margin:auto;
-margin-top:40px;
-}
+/* CONTENT */
+.content{margin-left:var(--sidebar-w);padding:32px 36px;min-height:100vh;}
+.page-header{margin-bottom:32px;padding-bottom:24px;border-bottom:1px solid var(--border);}
+.page-header h1{font-family:'Fraunces',serif;font-size:28px;font-weight:600;color:var(--text);margin-bottom:6px;}
+.page-header p{font-size:13.5px;color:var(--text2);line-height:1.6;}
 
-.card{
-border-radius:14px;
-box-shadow:0 10px 25px rgba(0,0,0,0.1);
-}
+/* STAT CARDS */
+.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:24px;}
+.stat-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:22px;position:relative;overflow:hidden;transition:all var(--transition);}
+.stat-card:hover{transform:translateY(-2px);box-shadow:0 8px 32px rgba(0,0,0,0.10);}
+.stat-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;border-radius:var(--radius) var(--radius) 0 0;opacity:0;transition:opacity var(--transition);}
+.stat-card:hover::before{opacity:1;}
+.stat-card.total::before{background:var(--accent);}
+.stat-card.high::before{background:var(--red);}
+.stat-card.medium::before{background:var(--amber);}
+.stat-card.low::before{background:var(--green);}
+.stat-label{font-size:11px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:var(--text3);margin-bottom:10px;}
+.stat-value{font-family:'DM Mono',monospace;font-size:36px;font-weight:500;line-height:1;}
+.stat-value.c-red{color:var(--red);}
+.stat-value.c-amber{color:var(--amber);}
+.stat-value.c-green{color:var(--green);}
+.stat-value.c-blue{color:var(--accent);}
+.stat-sub{font-size:11.5px;color:var(--text3);margin-top:6px;}
+.stat-icon{position:absolute;right:16px;top:16px;font-size:22px;opacity:0.12;}
 
-.stat-card{
-text-align:center;
-padding:20px;
-}
+/* PANELS */
+.panel{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:24px;margin-bottom:20px;transition:background var(--transition),border-color var(--transition);}
+.panel-title{font-size:13px;font-weight:600;color:var(--text);margin-bottom:20px;display:flex;align-items:center;justify-content:space-between;}
+.panel-badge{font-size:10.5px;font-weight:500;padding:3px 9px;border-radius:999px;background:var(--surface2);color:var(--text2);border:1px solid var(--border);}
 
-.stat-number{
-font-size:26px;
-font-weight:700;
-}
+/* CHART ROW */
+.chart-row{display:grid;grid-template-columns:1fr 1.6fr;gap:20px;margin-bottom:20px;}
 
-.chart-box{
-max-width:450px;
-margin:auto;
-}
+/* INTERVENTION */
+.intervention-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+.intervention-item{border-radius:var(--radius);padding:20px;border:1px solid transparent;transition:all var(--transition);}
+.intervention-item:hover{transform:translateY(-2px);}
+.intervention-item.red{background:var(--red-bg);border-color:var(--red-soft);}
+.intervention-item.amber{background:var(--amber-bg);border-color:var(--amber-soft);}
+.intervention-item.green{background:var(--green-bg);border-color:var(--green-soft);}
+.intervention-item .ilabel{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:8px;}
+.intervention-item.red .ilabel{color:var(--red);}
+.intervention-item.amber .ilabel{color:var(--amber);}
+.intervention-item.green .ilabel{color:var(--green);}
+.intervention-item .icount{font-family:'DM Mono',monospace;font-size:32px;font-weight:500;line-height:1;}
+.intervention-item.red .icount{color:var(--red);}
+.intervention-item.amber .icount{color:var(--amber);}
+.intervention-item.green .icount{color:var(--green);}
+.intervention-item .idesc{font-size:12px;color:var(--text3);margin-top:5px;}
 
-.chart-box canvas{
-height:260px !important;
-}
+/* FEATURE TABLE */
+.feat-table{width:100%;border-collapse:collapse;font-size:13px;}
+.feat-table thead th{padding:10px 14px;text-align:left;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;color:var(--text3);border-bottom:1px solid var(--border);}
+.feat-table tbody td{padding:11px 14px;border-bottom:1px solid var(--border);color:var(--text);}
+.feat-table tbody tr:last-child td{border-bottom:none;}
+.feat-table tbody tr:hover td{background:var(--surface2);}
+.mono{font-family:'DM Mono',monospace;font-size:12.5px;}
+.imp-bar-wrap{display:flex;align-items:center;gap:10px;}
+.imp-bar-bg{flex:1;height:6px;background:var(--surface2);border-radius:999px;overflow:hidden;}
+.imp-bar{height:100%;border-radius:999px;}
+.feat-pill{display:inline-block;padding:3px 10px;border-radius:999px;font-size:12px;font-weight:500;background:var(--surface2);color:var(--text2);border:1px solid var(--border);}
 
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px);}to{opacity:1;transform:translateY(0);}}
+.fade-up{animation:fadeUp 0.5s cubic-bezier(0.4,0,0.2,1) both;}
+.d1{animation-delay:0.05s;}.d2{animation-delay:0.10s;}.d3{animation-delay:0.15s;}.d4{animation-delay:0.20s;}.d5{animation-delay:0.25s;}
 </style>
-
 </head>
-
 <body>
 
-<div class="container-box">
+<aside class="sidebar">
+  <div class="sidebar-logo">
+    <div class="sidebar-logo-icon">🎓</div>
+    <div class="sidebar-logo-text">EarlyAlert AI<span>Academic Risk System</span></div>
+  </div>
+  <div class="nav-section">Main</div>
+  <a href="/dashboard"><span>📈</span> Dashboard</a>
+  <div class="nav-section">Analytics</div>
+  <a href="/model-insights"><span>🧠</span> Model Insights</a>
+  <a href="/fairness-analysis"><span>⚖</span> Fairness Analysis</a>
+  <a href="/classification-insights"><span>📚</span> Classification</a>
+  <div class="nav-section">Data</div>
+  <a href="/upload-data"><span>📂</span> Upload Dataset</a>
+  <div class="nav-section">Admin</div>
+  <a href="/admin-analytics" class="active"><span>📊</span> Analytics</a>
+  <a href="/export"><span>📄</span> Export Report</a>
+  <div class="sidebar-footer">
+    <a href="/logout" style="color:var(--red)!important;"><span>🚪</span> Logout</a>
+    <div class="dark-toggle mt-3" onclick="toggleDark()">
+      <span class="dark-toggle-label" id="toggleLabel">Light mode</span>
+      <div class="track" id="track"><div class="thumb"></div></div>
+    </div>
+  </div>
+</aside>
 
-<h3 class="text-center mb-4">Admin Analytics Dashboard</h3>
+<main class="content">
 
-<!-- DATASET STATISTICS -->
+  <div class="page-header fade-up">
+    <h1>Admin Analytics</h1>
+    <p>Full dataset overview — risk distribution, feature importance, and intervention summary.</p>
+  </div>
 
-<div class="row mb-4">
+  <!-- Stats -->
+  <div class="stats-grid fade-up d1">
+    <div class="stat-card total">
+      <div class="stat-label">Total Students</div>
+      <div class="stat-value c-blue">{{ total }}</div>
+      <div class="stat-sub">In current dataset</div>
+      <div class="stat-icon">👨‍🎓</div>
+    </div>
+    <div class="stat-card high">
+      <div class="stat-label">High Risk</div>
+      <div class="stat-value c-red">{{ high }}</div>
+      <div class="stat-sub">Immediate attention needed</div>
+      <div class="stat-icon">⚠</div>
+    </div>
+    <div class="stat-card medium">
+      <div class="stat-label">Medium Risk</div>
+      <div class="stat-value c-amber">{{ medium }}</div>
+      <div class="stat-sub">Weekly monitoring advised</div>
+      <div class="stat-icon">📊</div>
+    </div>
+    <div class="stat-card low">
+      <div class="stat-label">Low Risk</div>
+      <div class="stat-value c-green">{{ low }}</div>
+      <div class="stat-sub">Performing stable</div>
+      <div class="stat-icon">✅</div>
+    </div>
+  </div>
 
-<div class="col-md-3">
-<div class="card stat-card">
-<p>Total Students</p>
-<div class="stat-number">{{ total }}</div>
-</div>
-</div>
+  <!-- Charts Row -->
+  <div class="chart-row fade-up d2">
+    <div class="panel">
+      <div class="panel-title">Risk Distribution</div>
+      <canvas id="riskChart" height="220"></canvas>
+    </div>
+    <div class="panel">
+      <div class="panel-title">Feature Importance <span class="panel-badge">Random Forest</span></div>
+      <canvas id="importanceChart" height="220"></canvas>
+    </div>
+  </div>
 
-<div class="col-md-3">
-<div class="card stat-card">
-<p>High Risk</p>
-<div class="stat-number text-danger">{{ high }}</div>
-</div>
-</div>
+  <!-- Intervention Summary -->
+  <div class="panel fade-up d3">
+    <div class="panel-title">Intervention Summary</div>
+    <div class="intervention-grid">
+      <div class="intervention-item red">
+        <div class="ilabel">🚨 Immediate Counseling</div>
+        <div class="icount">{{ high }}</div>
+        <div class="idesc">Students requiring urgent academic support</div>
+      </div>
+      <div class="intervention-item amber">
+        <div class="ilabel">👁 Monitoring Required</div>
+        <div class="icount">{{ medium }}</div>
+        <div class="idesc">Students under weekly performance review</div>
+      </div>
+      <div class="intervention-item green">
+        <div class="ilabel">✅ Performing Stable</div>
+        <div class="icount">{{ low }}</div>
+        <div class="idesc">Students on track — no intervention needed</div>
+      </div>
+    </div>
+  </div>
 
-<div class="col-md-3">
-<div class="card stat-card">
-<p>Medium Risk</p>
-<div class="stat-number text-warning">{{ medium }}</div>
-</div>
-</div>
+  <!-- Risk Probability + Feature Table side by side -->
+  <div class="chart-row fade-up d4">
+    <div class="panel">
+      <div class="panel-title">Risk Probability Breakdown</div>
+      <canvas id="probChart" height="220"></canvas>
+    </div>
+    <div class="panel">
+      <div class="panel-title">Feature Importance Table</div>
+      <table class="feat-table">
+        <thead>
+          <tr><th>Feature</th><th>Score</th><th>Weight</th></tr>
+        </thead>
+        <tbody>
+          {% set feat_names = ["G1","G2","Study Time","Failures","Absences"] %}
+          {% set feat_colors = ["#1a56db","#1a56db","#e9852a","#e63946","#e63946"] %}
+          {% for i in range(importance|length) %}
+          <tr>
+            <td><span class="feat-pill">{{ feat_names[i] }}</span></td>
+            <td class="mono">{{ importance[i]|round(4) }}</td>
+            <td style="width:160px;">
+              <div class="imp-bar-wrap">
+                <div class="imp-bar-bg">
+                  <div class="imp-bar" style="width:{{ (importance[i]*100)|round(0) }}%;background:{{ feat_colors[i] }};"></div>
+                </div>
+                <span class="mono" style="font-size:11px;color:var(--text3);min-width:38px;">{{ (importance[i]*100)|round(1) }}%</span>
+              </div>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
 
-<div class="col-md-3">
-<div class="card stat-card">
-<p>Low Risk</p>
-<div class="stat-number text-success">{{ low }}</div>
-</div>
-</div>
-
-</div>
-
-
-<!-- RISK DISTRIBUTION -->
-
-<div class="card p-4 mb-4">
-
-<h5>Risk Distribution</h5>
-
-<div class="chart-box">
-<canvas id="riskChart"></canvas>
-</div>
-
-</div>
-
-
-<!-- FEATURE IMPORTANCE -->
-
-<div class="card p-4 mb-4">
-
-<h5>Feature Importance Summary</h5>
-
-<div class="chart-box">
-<canvas id="importanceChart"></canvas>
-</div>
-
-</div>
-
-
-<!-- INTERVENTION SUMMARY -->
-
-<div class="card p-4 mb-4">
-
-<h5>Intervention Summary</h5>
-
-<ul>
-
-<li>Students requiring immediate counseling: {{ high }}</li>
-
-<li>Students requiring monitoring: {{ medium }}</li>
-
-<li>Students performing stable: {{ low }}</li>
-
-</ul>
-
-</div>
-
-
-<!-- RISK PROBABILITY -->
-
-<div class="card p-4">
-
-<h5>Risk Probability Breakdown</h5>
-
-<div class="chart-box">
-<canvas id="probChart"></canvas>
-</div>
-</div>
-
-
-</div>
-
+</main>
 
 <script>
+function applyDark(on){document.body.classList.toggle('dark',on);document.getElementById('track').classList.toggle('on',on);document.getElementById('toggleLabel').textContent=on?'Dark mode':'Light mode';localStorage.setItem('dm',on?'1':'0');}
+function toggleDark(){applyDark(!document.body.classList.contains('dark'));}
+(function(){if(localStorage.getItem('dm')==='1')applyDark(true);})();
 
-let high = {{ high }}
-let medium = {{ medium }}
-let low = {{ low }}
+const high={{ high }}, medium={{ medium }}, low={{ low }}, total={{ total }};
+const importance={{ importance|tojson }};
+const chartOpts={responsive:true,plugins:{legend:{position:'bottom',labels:{boxWidth:10,font:{family:'DM Sans',size:12}}}},scales:{x:{grid:{display:false},ticks:{font:{family:'DM Sans',size:12}}},y:{grid:{color:'rgba(0,0,0,0.04)'},ticks:{font:{family:'DM Mono',size:11}}}}};
 
-let total = {{ total }}
+new Chart(document.getElementById('riskChart'),{
+  type:'pie',
+  data:{labels:['High','Medium','Low'],datasets:[{data:[high,medium,low],backgroundColor:['#e63946','#e9852a','#2a9d5c'],borderWidth:0}]},
+  options:{responsive:true,plugins:{legend:{position:'bottom',labels:{boxWidth:10,font:{family:'DM Sans',size:12}}}}}
+});
 
+const impColors=importance.map(v=>v>0.5?'#1a56db':v>0.1?'#e9852a':'#2a9d5c');
+new Chart(document.getElementById('importanceChart'),{
+  type:'bar',
+  data:{labels:['G1','G2','Study Time','Failures','Absences'],datasets:[{label:'Importance',data:importance,backgroundColor:impColors,borderRadius:8,borderWidth:0}]},
+  options:{...chartOpts,plugins:{legend:{display:false}}}
+});
 
-// Risk Distribution Chart
-
-new Chart(document.getElementById("riskChart"),{
-
-type:"pie",
-
-data:{
-labels:["High","Medium","Low"],
-
-datasets:[{
-data:[high,medium,low],
-backgroundColor:["#dc2626","#f59e0b","#16a34a"]
-}]
-}
-
-})
-
-
-// Feature Importance Chart
-
-let importance = {{ importance|tojson }}
-
-new Chart(document.getElementById("importanceChart"),{
-
-type:"bar",
-
-data:{
-labels:["G1","G2","Study Time","Failures","Absences"],
-
-datasets:[{
-label:"Importance",
-data:importance,
-backgroundColor:"#2563eb"
-}]
-}
-
-})
-
-
-// Probability Chart
-
-let highProb = high/total
-let medProb = medium/total
-let lowProb = low/total
-
-new Chart(document.getElementById("probChart"),{
-
-type:"bar",
-
-data:{
-labels:["High","Medium","Low"],
-
-datasets:[{
-label:"Risk Probability",
-data:[highProb,medProb,lowProb],
-backgroundColor:["#dc2626","#f59e0b","#16a34a"]
-}]
-}
-
-})
-
+new Chart(document.getElementById('probChart'),{
+  type:'bar',
+  data:{labels:['High','Medium','Low'],datasets:[{label:'Risk Probability',data:[high/total,medium/total,low/total],backgroundColor:['#e63946','#e9852a','#2a9d5c'],borderRadius:8,borderWidth:0}]},
+  options:{...chartOpts,plugins:{legend:{display:false}},scales:{...chartOpts.scales,y:{...chartOpts.scales.y,ticks:{...chartOpts.scales.y.ticks,callback:v=>(v*100).toFixed(0)+'%'}}}}
+});
 </script>
-
 </body>
 </html>
