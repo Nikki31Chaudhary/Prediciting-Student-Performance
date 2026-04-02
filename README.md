@@ -2,7 +2,7 @@
 
 ---
 
-## 📌 Project Overview
+## 📌 Project Overview:
 
 This project is a full-stack AI-powered academic analytics system designed to predict student performance early in the semester and identify at-risk students before academic failure occurs.
 
@@ -12,7 +12,7 @@ This system transforms traditional reactive academic monitoring into a predictiv
 
 ---
 
-## 🎯 Problem Statement
+## 🎯 Problem Statement:
 
 Conventional academic evaluation systems identify struggling students only after significant academic decline.
 
@@ -26,7 +26,7 @@ This project introduces:
 
 ---
 
-## 🧠 Machine Learning Pipeline
+## 🧠 Machine Learning Pipeline:
 
 ### 🔹 Models Used
 
@@ -51,7 +51,7 @@ This project introduces:
 
 ---
 
-## 📊 Risk Classification Logic
+## 📊 Risk Classification Logic:
 
 Based on predicted grade (0–20 scale):
 
