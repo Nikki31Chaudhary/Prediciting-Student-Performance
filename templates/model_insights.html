@@ -1,92 +1,152 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Model Insights</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<meta charset="UTF-8">
+<title>Model Insights</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&family=Fraunces:wght@300;600&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
+:root{--bg:#f7f6f2;--surface:#ffffff;--surface2:#f0eeeb;--border:rgba(0,0,0,0.08);--text:#1a1816;--text2:#6b6560;--text3:#9b958f;--accent:#1a56db;--red:#e63946;--amber:#e9852a;--green:#2a9d5c;--red-bg:#fdf0f0;--amber-bg:#fef6ec;--green-bg:#edf8f2;--red-soft:#f5c6c9;--amber-soft:#fbd9b4;--green-soft:#a8dfc0;--radius:14px;--radius-sm:8px;--sidebar-w:230px;--transition:0.25s cubic-bezier(0.4,0,0.2,1);}
+body.dark{--bg:#0d0c0b;--surface:#1c1a18;--surface2:#252220;--border:rgba(255,255,255,0.07);--text:#f0ede8;--text2:#9b958f;--text3:#6b6560;--accent:#4f84f5;--red-bg:#2a1212;--amber-bg:#2a1c0a;--green-bg:#0a2015;--red-soft:#5c2020;--amber-soft:#5c3010;--green-soft:#10402a;}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);transition:background var(--transition),color var(--transition);min-height:100vh;}
+.sidebar{position:fixed;left:0;top:0;width:var(--sidebar-w);height:100vh;background:var(--surface);border-right:1px solid var(--border);display:flex;flex-direction:column;padding:28px 20px;z-index:200;transition:background var(--transition),border-color var(--transition);}
+.sidebar-logo{display:flex;align-items:center;gap:10px;margin-bottom:32px;padding-bottom:24px;border-bottom:1px solid var(--border);}
+.sidebar-logo-icon{width:36px;height:36px;background:var(--accent);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;}
+.sidebar-logo-text{font-family:'Fraunces',serif;font-size:15px;font-weight:600;color:var(--text);line-height:1.2;}
+.sidebar-logo-text span{display:block;font-size:11px;font-family:'DM Sans',sans-serif;font-weight:400;color:var(--text2);}
+.nav-section{font-size:10px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--text3);margin:16px 0 8px 8px;}
+.sidebar a{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:var(--radius-sm);color:var(--text2);text-decoration:none;font-size:13.5px;transition:all var(--transition);margin-bottom:2px;}
+.sidebar a:hover{background:var(--surface2);color:var(--text);}
+.sidebar a.active{background:var(--accent);color:#fff;font-weight:500;}
+.sidebar-footer{margin-top:auto;padding-top:20px;border-top:1px solid var(--border);}
+.dark-toggle{display:flex;align-items:center;justify-content:space-between;padding:10px 12px;border-radius:var(--radius-sm);cursor:pointer;background:var(--surface2);border:1px solid var(--border);}
+.dark-toggle-label{font-size:12.5px;color:var(--text2);font-weight:500;}
+.track{width:34px;height:18px;background:var(--border);border-radius:999px;position:relative;transition:background 0.3s;border:1px solid var(--border);flex-shrink:0;}
+.track.on{background:var(--accent);border-color:var(--accent);}
+.thumb{width:12px;height:12px;background:#fff;border-radius:50%;position:absolute;top:2px;left:2px;transition:transform 0.3s;}
+.track.on .thumb{transform:translateX(16px);}
+.content{margin-left:var(--sidebar-w);padding:32px 36px;min-height:100vh;}
+.page-header{margin-bottom:32px;padding-bottom:24px;border-bottom:1px solid var(--border);}
+.page-header h1{font-family:'Fraunces',serif;font-size:28px;font-weight:600;color:var(--text);margin-bottom:6px;}
+.page-header p{font-size:13.5px;color:var(--text2);line-height:1.6;}
+.panel{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:24px;margin-bottom:20px;transition:background var(--transition),border-color var(--transition);}
+.panel-title{font-size:13px;font-weight:600;color:var(--text);margin-bottom:20px;}
+.metrics-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px;}
+.metric-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:24px;text-align:center;transition:all var(--transition);}
+.metric-card:hover{transform:translateY(-2px);box-shadow:0 8px 32px rgba(0,0,0,0.10);}
+.metric-card .mlabel{font-size:11.5px;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;color:var(--text3);margin-bottom:10px;}
+.metric-card .mvalue{font-family:'DM Mono',monospace;font-size:40px;font-weight:500;color:var(--text);line-height:1;}
+.metric-card .msub{font-size:12px;color:var(--text2);margin-top:6px;}
+.interpretation{background:var(--green-bg);border:1px solid var(--green-soft);border-radius:var(--radius);padding:18px 20px;margin-bottom:20px;}
+.interpretation .ititle{font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;color:var(--green);margin-bottom:6px;}
+.interpretation p{font-size:13px;color:var(--text2);line-height:1.6;margin:0;}
+.feat-table{width:100%;border-collapse:collapse;font-size:13px;}
+.feat-table thead th{padding:10px 14px;text-align:left;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;color:var(--text3);border-bottom:1px solid var(--border);}
+.feat-table tbody td{padding:12px 14px;border-bottom:1px solid var(--border);color:var(--text);}
+.feat-table tbody tr:last-child td{border-bottom:none;}
+.feat-table tbody tr:hover td{background:var(--surface2);}
+.mono{font-family:'DM Mono',monospace;font-size:12.5px;}
+.imp-bar-wrap{display:flex;align-items:center;gap:10px;}
+.imp-bar-bg{flex:1;height:6px;background:var(--surface2);border-radius:999px;overflow:hidden;}
+.imp-bar{height:100%;border-radius:999px;background:var(--accent);}
+.feat-pill{display:inline-block;padding:3px 10px;border-radius:999px;font-size:12px;font-weight:500;background:var(--surface2);color:var(--text2);border:1px solid var(--border);}
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px);}to{opacity:1;transform:translateY(0);}}
+.fade-up{animation:fadeUp 0.5s cubic-bezier(0.4,0,0.2,1) both;}
+.d1{animation-delay:0.05s;}.d2{animation-delay:0.10s;}.d3{animation-delay:0.15s;}.d4{animation-delay:0.20s;}
+</style>
 </head>
-
-<body style="background:#f4f6f9">
-
-<div class="container mt-5">
-
-<h3 class="mb-4 text-center">📊 Machine Learning Model Insights</h3>
-
-<div class="row mb-4">
-    <div class="col-md-6">
-        <div class="card p-4 text-center shadow">
-            <h6>Mean Squared Error</h6>
-            <h4>{{ mse }}</h4>
-        </div>
+<body>
+<aside class="sidebar">
+  <div class="sidebar-logo">
+    <div class="sidebar-logo-icon">🎓</div>
+    <div class="sidebar-logo-text">EarlyAlert AI<span>Academic Risk System</span></div>
+  </div>
+  <div class="nav-section">Main</div>
+  <a href="/dashboard"><span>📈</span> Dashboard</a>
+  <div class="nav-section">Analytics</div>
+  <a href="/model-insights" class="active"><span>🧠</span> Model Insights</a>
+  <a href="/fairness-analysis"><span>⚖</span> Fairness Analysis</a>
+  <a href="/classification-insights"><span>📚</span> Classification</a>
+  <div class="nav-section">Data</div>
+  <a href="/upload-data"><span>📂</span> Upload Dataset</a>
+  <div class="sidebar-footer">
+    <a href="/logout" style="color:var(--red)!important;"><span>🚪</span> Logout</a>
+    <div class="dark-toggle mt-3" onclick="toggleDark()">
+      <span class="dark-toggle-label" id="toggleLabel">Light mode</span>
+      <div class="track" id="track"><div class="thumb"></div></div>
     </div>
+  </div>
+</aside>
 
-    <div class="col-md-6">
-        <div class="card p-4 text-center shadow">
-            <h6>R² Score</h6>
-            <h4>{{ r2 }}</h4>
-        </div>
+<main class="content">
+  <div class="page-header fade-up">
+    <h1>Model Insights</h1>
+    <p>Performance metrics and feature importance of the Random Forest regression model.</p>
+  </div>
+
+  <div class="metrics-grid fade-up d1">
+    <div class="metric-card">
+      <div class="mlabel">Mean Squared Error</div>
+      <div class="mvalue">{{ mse }}</div>
+      <div class="msub">Lower is better</div>
     </div>
+    <div class="metric-card">
+      <div class="mlabel">R² Score</div>
+      <div class="mvalue" style="color:var(--green);">{{ r2 }}</div>
+      <div class="msub">Closer to 1.0 is better</div>
+    </div>
+  </div>
 
-    <div class="alert alert-info mt-4">
-    <b>Model Interpretation:</b><br>
-    {{ interpretation_text }}
-</div>
-</div>
+  <div class="interpretation fade-up d2">
+    <div class="ititle">✅ Model Interpretation</div>
+    <p>{{ interpretation_text }}</p>
+  </div>
 
-<div class="card p-4 shadow">
-    <h6>Feature Importance</h6>
-    <canvas id="importanceChart"></canvas>
-</div>
+  <div class="panel fade-up d3">
+    <div class="panel-title">Feature Importance</div>
+    <canvas id="importanceChart" height="100"></canvas>
+  </div>
 
-<br>
-
-<div class="card p-4 shadow">
-    <h6>Feature Importance Table</h6>
-    <table class="table table-bordered">
-        <thead>
-            <tr>
-                <th>Feature</th>
-                <th>Importance Score</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for f in feature_data %}
-            <tr>
-                <td>{{ f.name }}</td>
-                <td>{{ f.importance }}</td>
-            </tr>
-            {% endfor %}
-        </tbody>
+  <div class="panel fade-up d4">
+    <div class="panel-title">Feature Importance Table</div>
+    <table class="feat-table">
+      <thead>
+        <tr><th>Feature</th><th>Importance Score</th><th>Weight</th></tr>
+      </thead>
+      <tbody>
+      {% for f in feature_data %}
+      <tr>
+        <td><span class="feat-pill">{{ f.name }}</span></td>
+        <td class="mono">{{ f.importance }}</td>
+        <td style="width:200px;">
+          <div class="imp-bar-wrap">
+            <div class="imp-bar-bg"><div class="imp-bar" style="width:{{ (f.importance*100)|round(0) }}%"></div></div>
+            <span class="mono" style="font-size:11px;color:var(--text3);min-width:40px;">{{ (f.importance*100)|round(1) }}%</span>
+          </div>
+        </td>
+      </tr>
+      {% endfor %}
+      </tbody>
     </table>
-</div>
-
-</div>
+  </div>
+</main>
 
 <script>
-let labels = [
-{% for f in feature_data %}
-"{{ f.name }}",
-{% endfor %}
-];
+function applyDark(on){document.body.classList.toggle('dark',on);document.getElementById('track').classList.toggle('on',on);document.getElementById('toggleLabel').textContent=on?'Dark mode':'Light mode';localStorage.setItem('dm',on?'1':'0');}
+function toggleDark(){applyDark(!document.body.classList.contains('dark'));}
+(function(){if(localStorage.getItem('dm')==='1')applyDark(true);})();
 
-let values = [
-{% for f in feature_data %}
-{{ f.importance }},
-{% endfor %}
-];
+const labels=[{% for f in feature_data %}"{{ f.name }}",{% endfor %}];
+const values=[{% for f in feature_data %}{{ f.importance }},{% endfor %}];
+const colors=values.map(v=>v>0.5?'#1a56db':v>0.1?'#e9852a':'#2a9d5c');
 
-new Chart(document.getElementById("importanceChart"),{
-    type:'bar',
-    data:{
-        labels:labels,
-        datasets:[{
-            label:'Feature Importance',
-            data:values,
-            backgroundColor:'#0d6efd'
-        }]
-    }
+new Chart(document.getElementById('importanceChart'),{
+  type:'bar',
+  data:{labels,datasets:[{label:'Importance Score',data:values,backgroundColor:colors,borderRadius:8,borderWidth:0}]},
+  options:{responsive:true,plugins:{legend:{display:false}},scales:{x:{grid:{display:false}},y:{grid:{color:'rgba(0,0,0,0.04)'},ticks:{font:{family:'DM Mono',size:11}}}}}
 });
 </script>
-
 </body>
 </html>
